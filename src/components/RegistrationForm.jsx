@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-// Replace this URL after deploying your Google Apps Script
 const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL || ''
+const FORM_TOKEN = import.meta.env.VITE_FORM_TOKEN || ''
 
 export default function RegistrationForm() {
   const [form, setForm] = useState({ nombre: '', email: '', celular: '' })
@@ -35,7 +35,7 @@ export default function RegistrationForm() {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, timestamp: new Date().toISOString() }),
+        body: JSON.stringify({ ...form, timestamp: new Date().toISOString(), token: FORM_TOKEN }),
       })
       setStatus('success')
     } catch {
