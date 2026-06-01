@@ -115,6 +115,15 @@ body { min-height: 100vh; }
 .cta--big:hover { animation: none; }
 @media (prefers-reduced-motion: reduce) { .cta--big { animation: none; } }
 
+@keyframes bellRing {
+  0%,100% { transform: rotate(0); }
+  15%  { transform: rotate(18deg); }
+  30%  { transform: rotate(-14deg); }
+  45%  { transform: rotate(10deg); }
+  60%  { transform: rotate(-6deg); }
+  75%  { transform: rotate(3deg); }
+}
+
 .kicker { font-family: var(--serif); font-style: italic; color: var(--gold); }
 
 /* ---------- success state ---------- */

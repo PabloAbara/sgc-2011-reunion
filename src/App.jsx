@@ -68,7 +68,7 @@ export default function App() {
       {/* Sticky CTA */}
       <div className={'sticky-cta' + (showSticky && !done ? ' show' : '')}>
         <button onClick={scrollToForm}>
-          <BellIcon s={17} /> Anótame
+          <BellIcon s={17} shake /> Anótame
         </button>
       </div>
     </div>

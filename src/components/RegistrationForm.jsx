@@ -117,7 +117,7 @@ export default function RegistrationForm({ onDone }) {
       )}
 
       <button type="submit" className="cta cta--big" disabled={status === 'loading'}>
-        <BellIcon s={18} />
+        <BellIcon s={18} shake />
         {status === 'loading' ? 'Enviando...' : 'Inscribirme'}
       </button>
       <p className="kicker" style={{ textAlign: 'center', fontSize: '16px', margin: '16px 0 0' }}>
