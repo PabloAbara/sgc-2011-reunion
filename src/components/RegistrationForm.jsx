@@ -1,43 +1,40 @@
 import { useState } from 'react'
+import BellIcon from './BellIcon'
+
+const errStyle = { display: 'block', marginTop: '5px', fontFamily: 'var(--sans)', fontSize: '11px', color: '#c2552f', letterSpacing: '.04em' }
 
 const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL || ''
 const FORM_TOKEN = import.meta.env.VITE_FORM_TOKEN || ''
 
-export default function RegistrationForm() {
-  const [form, setForm] = useState({ nombre: '', email: '', celular: '' })
+export default function RegistrationForm({ onDone }) {
+  const [data, setData] = useState({ nombre: '', mail: '', celular: '' })
+  const [err, setErr] = useState({})
   const [status, setStatus] = useState('idle') // idle | loading | success | error
-  const [errors, setErrors] = useState({})
 
-  const validate = () => {
-    const e = {}
-    if (!form.nombre.trim()) e.nombre = 'Ingresa tu nombre'
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = 'Email inválido'
-    if (!form.celular.trim()) e.celular = 'Ingresa tu celular'
-    return e
+  const set = (k) => (e) => {
+    setData(prev => ({ ...prev, [k]: e.target.value }))
+    if (err[k]) setErr(prev => ({ ...prev, [k]: false }))
   }
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-    setErrors((prev) => ({ ...prev, [e.target.name]: undefined }))
-  }
-
-  const handleSubmit = async (e) => {
+  async function submit(e) {
     e.preventDefault()
-    const errs = validate()
-    if (Object.keys(errs).length) {
-      setErrors(errs)
-      return
-    }
+    const er = {}
+    if (!data.nombre.trim()) er.nombre = true
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.mail)) er.mail = true
+    if (data.celular.replace(/\D/g, '').length < 8) er.celular = true
+    setErr(er)
+    if (Object.keys(er).length > 0) return
+
     setStatus('loading')
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, timestamp: new Date().toISOString(), token: FORM_TOKEN }),
+        body: JSON.stringify({ ...data, timestamp: new Date().toISOString(), token: FORM_TOKEN }),
       })
       setStatus('success')
+      onDone && onDone()
     } catch {
       setStatus('error')
     }
@@ -45,87 +42,64 @@ export default function RegistrationForm() {
 
   if (status === 'success') {
     return (
-      <div className="animate-fade-up flex flex-col items-center gap-4 py-6 text-center">
-        <span className="text-4xl">🔔</span>
-        <p className="text-lg font-medium text-gold-400">¡Listo!</p>
-        <p className="text-sm text-gray-400 max-w-xs">
-          Te contactaremos con los detalles pronto.
+      <div className="success">
+        <div className="seal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+            strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12.5l4.5 4.5L19 6.5" />
+          </svg>
+        </div>
+        <div className="eyebrow" style={{ fontSize: '12px', letterSpacing: '.30em', marginBottom: '14px', marginRight: '-.30em' }}>
+          Te anotaste en la lista
+        </div>
+        <h3 style={{ fontFamily: 'var(--serif)', fontWeight: 500, fontSize: '48px', lineHeight: 1, margin: '0 0 14px' }}>
+          Listo!
+        </h3>
+        <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '20px', color: 'var(--cream-dim)', margin: 0, lineHeight: 1.35 }}>
+          Te contactaremos pronto <br /> con los detalles.
         </p>
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold uppercase tracking-widest text-gray-400">
-          Nombre completo
-        </label>
-        <input
-          name="nombre"
-          type="text"
-          value={form.nombre}
-          onChange={handleChange}
-          placeholder="Pablo Abara"
-          className={`bg-transparent border-b py-2 text-sm outline-none transition-colors placeholder-gray-600
-            ${errors.nombre ? 'border-red-500' : 'border-gray-700 focus:border-gold-400'}`}
-        />
-        {errors.nombre && (
-          <span className="text-xs text-red-400">{errors.nombre}</span>
-        )}
-      </div>
+    <form onSubmit={submit} noValidate>
+      <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 600, fontSize: '30px', margin: '2px 0 4px', color: 'var(--cream)', textAlign: 'center' }}>
+        Anótate ahora
+      </h2>
+      <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '16px', color: 'var(--cream-faint)', margin: '0 0 4px', textAlign: 'center' }}>
+        Más detalles pronto.
+      </p>
 
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold uppercase tracking-widest text-gray-400">
-          Email
-        </label>
-        <input
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="pablo@ejemplo.com"
-          className={`bg-transparent border-b py-2 text-sm outline-none transition-colors placeholder-gray-600
-            ${errors.email ? 'border-red-500' : 'border-gray-700 focus:border-gold-400'}`}
-        />
-        {errors.email && (
-          <span className="text-xs text-red-400">{errors.email}</span>
-        )}
+      <div className="field">
+        <input className={err.nombre ? 'invalid' : ''} value={data.nombre}
+          onChange={set('nombre')} placeholder="Nombre completo" />
+        {err.nombre && <span style={errStyle}>Ingresa tu nombre</span>}
       </div>
-
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold uppercase tracking-widest text-gray-400">
-          Celular
-        </label>
-        <input
-          name="celular"
-          type="tel"
-          value={form.celular}
-          onChange={handleChange}
-          placeholder="+56 9 1234 5678"
-          className={`bg-transparent border-b py-2 text-sm outline-none transition-colors placeholder-gray-600
-            ${errors.celular ? 'border-red-500' : 'border-gray-700 focus:border-gold-400'}`}
-        />
-        {errors.celular && (
-          <span className="text-xs text-red-400">{errors.celular}</span>
-        )}
+      <div className="field">
+        <input className={err.mail ? 'invalid' : ''} value={data.mail}
+          onChange={set('mail')} placeholder="Mail" inputMode="email" />
+        {err.mail && <span style={errStyle}>Ingresa un mail válido</span>}
+      </div>
+      <div className="field">
+        <input className={err.celular ? 'invalid' : ''} value={data.celular}
+          onChange={set('celular')} placeholder="Celular" inputMode="tel" />
+        {err.celular && <span style={errStyle}>Ingresa tu celular</span>}
       </div>
 
       {status === 'error' && (
-        <p className="text-xs text-red-400">
+        <p style={{ color: '#c2552f', fontSize: '13px', marginTop: '12px', fontFamily: 'var(--sans)' }}>
           Algo salió mal. Intenta de nuevo.
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="mt-2 flex items-center justify-center gap-2 bg-gold-400 hover:bg-gold-500
-          text-black font-semibold text-sm py-3 px-6 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <span>🔔</span>
-        <span>{status === 'loading' ? 'Enviando...' : 'Anótame'}</span>
+      <button type="submit" className="cta cta--big" disabled={status === 'loading'}>
+        <BellIcon s={18} />
+        {status === 'loading' ? 'Enviando...' : 'Inscribirme'}
       </button>
+      <p className="kicker" style={{ textAlign: 'center', fontSize: '16px', margin: '16px 0 0' }}>
+        Si no asistes no existes.
+      </p>
     </form>
   )
 }
