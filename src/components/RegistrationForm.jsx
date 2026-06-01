@@ -7,7 +7,7 @@ const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL || ''
 const FORM_TOKEN = import.meta.env.VITE_FORM_TOKEN || ''
 
 export default function RegistrationForm({ onDone }) {
-  const [data, setData] = useState({ nombre: '', mail: '', celular: '' })
+  const [data, setData] = useState({ nombre: '', mail: '', celular: '', curso: '' })
   const [err, setErr] = useState({})
   const [status, setStatus] = useState('idle') // idle | loading | success | error
 
@@ -22,6 +22,7 @@ export default function RegistrationForm({ onDone }) {
     if (!data.nombre.trim()) er.nombre = true
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.mail)) er.mail = true
     if (data.celular.replace(/\D/g, '').length < 8) er.celular = true
+    if (!data.curso) er.curso = true
     setErr(er)
     if (Object.keys(er).length > 0) return
 
@@ -85,6 +86,28 @@ export default function RegistrationForm({ onDone }) {
         <input className={err.celular ? 'invalid' : ''} value={data.celular}
           onChange={set('celular')} placeholder="Celular" inputMode="tel" />
         {err.celular && <span style={errStyle}>Ingresa tu celular</span>}
+      </div>
+      <div className="field">
+        <select
+          value={data.curso}
+          onChange={e => { setData(prev => ({ ...prev, curso: e.target.value })); if (err.curso) setErr(prev => ({ ...prev, curso: false })) }}
+          style={{
+            width: '100%', background: 'transparent', border: 0,
+            borderBottom: `1px solid ${err.curso ? '#c2552f' : 'rgba(244,239,226,.22)'}`,
+            color: data.curso ? 'var(--cream)' : 'var(--cream-faint)',
+            fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '21px',
+            padding: '8px 2px 11px', outline: 'none', appearance: 'none',
+            cursor: 'pointer', transition: 'border-color .35s ease',
+          }}
+        >
+          <option value="" disabled style={{ background: '#0c0a06' }}>¿De qué curso eras?</option>
+          {['A','B','C','D','E','F'].map(c => (
+            <option key={c} value={c} style={{ background: '#0c0a06', color: 'var(--cream)', fontStyle: 'normal' }}>
+              {c}
+            </option>
+          ))}
+        </select>
+        {err.curso && <span style={errStyle}>Selecciona tu curso</span>}
       </div>
 
       {status === 'error' && (
