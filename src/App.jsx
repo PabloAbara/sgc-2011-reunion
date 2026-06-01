@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Hero from './components/Hero'
 import RegistrationForm from './components/RegistrationForm'
 import BellIcon from './components/BellIcon'
+import CinematicIntro from './components/CinematicIntro'
 
 const PHOTO = '/generacion-2011-duo.png'
 
@@ -9,6 +10,7 @@ export default function App() {
   const formRef = useRef(null)
   const [showSticky, setShowSticky] = useState(false)
   const [done, setDone] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
 
   useEffect(() => {
     const el = formRef.current
@@ -24,6 +26,7 @@ export default function App() {
   }
 
   return (
+    <>
     <div className="page warm-bg">
       <div className="grain" />
 
@@ -69,5 +72,8 @@ export default function App() {
         </button>
       </div>
     </div>
+
+    {showIntro && <CinematicIntro onDone={() => setShowIntro(false)} />}
+    </>
   )
 }

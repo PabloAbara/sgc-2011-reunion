@@ -66,10 +66,10 @@ export default function RegistrationForm({ onDone }) {
   return (
     <form onSubmit={submit} noValidate>
       <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 600, fontSize: '30px', margin: '2px 0 4px', color: 'var(--cream)', textAlign: 'center' }}>
-        Anótate ahora
+        Anótate acá
       </h2>
       <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '16px', color: 'var(--cream-faint)', margin: '0 0 4px', textAlign: 'center' }}>
-        Más detalles pronto.
+        Y te avisamos los detalles pronto.
       </p>
 
       <div className="field">
@@ -121,7 +121,7 @@ export default function RegistrationForm({ onDone }) {
         {status === 'loading' ? 'Enviando...' : 'Inscribirme'}
       </button>
       <p className="kicker" style={{ textAlign: 'center', fontSize: '16px', margin: '16px 0 0' }}>
-        Si no asistes no existes.
+        Se viene bueno.
       </p>
     </form>
   )
