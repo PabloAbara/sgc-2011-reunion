@@ -6,25 +6,21 @@ const DWELL_S  = 1.3
 const FADE_MS  = 1600
 
 const ANCH = [
-  [180,   90],
-  [262,  470],
-  [104,  900],
-  [262, 1330],
-  [108, 1760],
-  [262, 2190],
-  [104, 2620],
-  [206, 3050],
-  [180, 3230],
+  [180,   90],   // origen ✦
+  [262,  470],   // 2011
+  [104,  900],   // 2016
+  [262, 1330],   // 2020
+  [108, 1660],   // 2021
+  [206, 1990],   // 2026
+  [180, 2170],   // punta final
 ]
-const WORLD_H = 3320
+const WORLD_H = 2260
 
 const MILESTONES = [
-  { year: '2011', side: 'r', line: 'Último día con uniforme.',    photo: '/milestones/hito-2011.jpg',  focus: 'center 32%' },
-  { year: '2015', side: 'l', line: 'Chile gana su primera Copa.', photo: '/milestones/hito-2015.png',  focus: 'center 30%' },
-  { year: '2016', side: 'r', line: 'Carrete 5 años.',             photo: '/milestones/hito-2016.jpg',  focus: 'center 38%' },
-  { year: '2019', side: 'l', line: 'Estallido social.',           photo: '/milestones/hito-2019.avif', focus: 'center 42%' },
-  { year: '2020', side: 'r', line: 'Pandemia.',                   photo: '/milestones/hito-2020.webp', focus: 'center 35%' },
-  { year: '2021', side: 'l', line: '10 años de egreso.',          photo: '/milestones/hito-2021.gif',  focus: 'center 45%' },
+  { year: '2011', side: 'r', line: 'Último día con uniforme.',  photo: '/milestones/hito-2011.jpg',  focus: 'center 32%' },
+  { year: '2016', side: 'l', line: 'Carrete 5 años.',           photo: '/milestones/hito-2016.jpg',  focus: 'center 38%' },
+  { year: '2020', side: 'r', line: 'Pandemia.',                 photo: '/milestones/hito-2020.webp', focus: 'center 35%' },
+  { year: '2021', side: 'l', line: '10 años de egreso.',        photo: '/milestones/hito-2021.gif',  focus: 'center 45%' },
   { year: '2026', side: 'r', line: 'El reencuentro.' },
 ]
 

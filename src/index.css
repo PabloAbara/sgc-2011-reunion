@@ -345,13 +345,14 @@ body { min-height: 100vh; }
 
 .cine-skip {
   position: absolute; top: calc(16px + env(safe-area-inset-top, 0px)); right: 18px; z-index: 10;
-  border: 0; background: transparent; cursor: pointer;
+  border: 1px solid rgba(244,239,226,.25); background: rgba(244,239,226,.1);
+  backdrop-filter: blur(6px); cursor: pointer; border-radius: 999px;
   font-family: var(--sans); font-weight: 600;
-  font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--cream-faint); padding: 8px 10px;
-  transition: color .3s ease, transform .3s ease;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--cream); padding: 9px 16px;
+  transition: background .25s ease, border-color .25s ease;
 }
-.cine-skip:hover { color: var(--cream); transform: translateX(2px); }
+.cine-skip:hover { background: rgba(244,239,226,.18); border-color: rgba(244,239,226,.45); }
 
 .cine-timeline {
   position: absolute; left: 0; right: 0; z-index: 9;
