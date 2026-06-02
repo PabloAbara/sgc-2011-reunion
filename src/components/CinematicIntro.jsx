@@ -47,21 +47,22 @@ function PlaceholderBg() {
 function DateCard() {
   return (
     <div style={{
-      width: '100%', height: '100%', background: '#0c0a06',
+      width: '100%', height: '100%',
+      background: 'radial-gradient(ellipse at 50% 60%, #1e160a 0%, #0c0a06 100%)',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       gap: 0,
     }}>
-      <span style={{ fontFamily: 'var(--sans)', fontSize: '8px', letterSpacing: '.32em', textTransform: 'uppercase', color: 'rgba(201,161,74,.55)', marginBottom: '14px' }}>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: '8px', letterSpacing: '.32em', textTransform: 'uppercase', color: '#c9a14a', marginBottom: '16px' }}>
         El reencuentro
       </span>
-      <span style={{ fontFamily: 'var(--serif)', fontSize: '72px', fontWeight: 600, color: '#c9a14a', lineHeight: 1, letterSpacing: '-.02em' }}>
+      <span style={{ fontFamily: 'var(--serif)', fontSize: '96px', fontWeight: 600, color: '#c9a14a', lineHeight: 1, letterSpacing: '-.02em', textShadow: '0 0 40px rgba(201,161,74,.6)' }}>
         10
       </span>
-      <div style={{ width: '28px', height: '1px', background: 'rgba(201,161,74,.35)', margin: '10px 0' }} />
-      <span style={{ fontFamily: 'var(--sans)', fontSize: '12px', fontWeight: 700, letterSpacing: '.38em', color: '#c9a14a', textTransform: 'uppercase' }}>
+      <div style={{ width: '36px', height: '1px', background: '#c9a14a', margin: '12px 0', opacity: .7 }} />
+      <span style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 700, letterSpacing: '.42em', color: '#c9a14a', textTransform: 'uppercase', textShadow: '0 0 24px rgba(201,161,74,.5)' }}>
         Oct
       </span>
-      <span style={{ fontFamily: 'var(--sans)', fontSize: '9px', letterSpacing: '.22em', color: 'rgba(201,161,74,.4)', textTransform: 'uppercase', marginTop: '8px' }}>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: '10px', letterSpacing: '.24em', color: '#c9a14a', textTransform: 'uppercase', marginTop: '10px', opacity: .7 }}>
         2026
       </span>
     </div>
