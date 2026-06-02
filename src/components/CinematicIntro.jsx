@@ -90,8 +90,10 @@ export default function CinematicIntro({ onDone }) {
   const startRef   = useRef(null)
   const intervalRef = useRef(null)
   const finishedRef = useRef(false)
+  const audioRef   = useRef(null)
 
   const [ready,     setReady]     = useState(false)
+  const [started,   setStarted]   = useState(false)
   const [st,        setSt]        = useState({ elapsed: 0, len: 0, x: ANCH[0][0], y: ANCH[0][1] })
   const [finishing, setFinishing] = useState(false)
   const [stageH,    setStageH]    = useState(window.innerHeight)
@@ -126,6 +128,20 @@ export default function CinematicIntro({ onDone }) {
     setReady(true)
   }, [])
 
+  // audio — se prepara al montar, arranca cuando el usuario toca
+  useEffect(() => {
+    const audio = new Audio('/intro-music.mp3')
+    audio.volume = 1.0
+    audioRef.current = audio
+    return () => { audio.pause(); audio.src = '' }
+  }, [])
+
+  function handleStart() {
+    if (started) return
+    audioRef.current?.play().catch(() => {})
+    setStarted(true)
+  }
+
   // bloquear scroll mientras está la intro
   useEffect(() => {
     const prev = document.body.style.overflow
@@ -137,7 +153,7 @@ export default function CinematicIntro({ onDone }) {
 
   // reloj principal
   useEffect(() => {
-    if (!ready) return
+    if (!ready || !started) return
     startRef.current = performance.now()
     intervalRef.current = setInterval(() => {
       const { kf, TOTAL } = geomRef.current
@@ -148,13 +164,22 @@ export default function CinematicIntro({ onDone }) {
       if (sec >= TOTAL) finish()
     }, 30)
     return () => clearInterval(intervalRef.current)
-  }, [ready]) // eslint-disable-line
+  }, [ready, started]) // eslint-disable-line
 
   function finish() {
     if (finishedRef.current) return
     finishedRef.current = true
     clearInterval(intervalRef.current)
     setFinishing(true)
+    // fade out audio
+    const audio = audioRef.current
+    if (audio) {
+      const step = audio.volume / 20
+      const fade = setInterval(() => {
+        if (audio.volume > step) audio.volume = Math.max(0, audio.volume - step)
+        else { audio.pause(); clearInterval(fade) }
+      }, FADE_MS / 20)
+    }
     setTimeout(() => onDone && onDone(), FADE_MS)
   }
   function skip() {
@@ -173,8 +198,16 @@ export default function CinematicIntro({ onDone }) {
   const camY    = centerY - st.y
 
   return (
-    <div className={'cine' + (finishing ? ' cine--out' : '')}>
+    <div className={'cine' + (finishing ? ' cine--out' : '')} onClick={handleStart}>
       <div className="cine-stage" style={{ '--stageH': stageH + 'px' }}>
+
+        {/* overlay "Toca para iniciar" */}
+        {!started && (
+          <div className="cine-tap-overlay">
+            <span className="cine-tap-star">✦</span>
+            <p className="cine-tap-text">Toca para iniciar</p>
+          </div>
+        )}
 
         <div className="world" style={{ transform: `translate(${camX}px, ${camY}px)` }}>
 
