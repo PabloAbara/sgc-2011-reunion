@@ -21,7 +21,7 @@ const MILESTONES = [
   { year: '2016', side: 'l', line: 'Carrete 5 años.',           photo: '/milestones/hito-2016.jpg',  focus: 'center 38%' },
   { year: '2020', side: 'r', line: 'Pandemia.',                 photo: '/milestones/hito-2020.webp', focus: 'center 35%' },
   { year: '2021', side: 'l', line: '10 años de egreso.',        photo: '/milestones/hito-2021.gif',  focus: 'center 45%' },
-  { year: '2026', side: 'r', line: 'El reencuentro.' },
+  { year: '2026', side: 'r', line: 'El reencuentro.', dateCard: true },
 ]
 
 function catmullRomPath(pts, k = 1) {
@@ -40,6 +40,30 @@ function PlaceholderBg() {
   return (
     <div className="ph-bg">
       <div className="ph-stripes" />
+    </div>
+  )
+}
+
+function DateCard() {
+  return (
+    <div style={{
+      width: '100%', height: '100%', background: '#0c0a06',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      gap: 0,
+    }}>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: '8px', letterSpacing: '.32em', textTransform: 'uppercase', color: 'rgba(201,161,74,.55)', marginBottom: '14px' }}>
+        El reencuentro
+      </span>
+      <span style={{ fontFamily: 'var(--serif)', fontSize: '72px', fontWeight: 600, color: '#c9a14a', lineHeight: 1, letterSpacing: '-.02em' }}>
+        10
+      </span>
+      <div style={{ width: '28px', height: '1px', background: 'rgba(201,161,74,.35)', margin: '10px 0' }} />
+      <span style={{ fontFamily: 'var(--sans)', fontSize: '12px', fontWeight: 700, letterSpacing: '.38em', color: '#c9a14a', textTransform: 'uppercase' }}>
+        Oct
+      </span>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: '9px', letterSpacing: '.22em', color: 'rgba(201,161,74,.4)', textTransform: 'uppercase', marginTop: '8px' }}>
+        2026
+      </span>
     </div>
   )
 }
@@ -232,7 +256,7 @@ export default function CinematicIntro({ onDone }) {
                 <div className="mst-card" style={{ transform: `rotate(${m.side === 'r' ? 2.5 : -2.5}deg)` }}>
                   {m.photo
                     ? <div className="mst-photo" style={{ backgroundImage: `url(${m.photo})`, backgroundPosition: m.focus || 'center' }} />
-                    : <PlaceholderBg />}
+                    : m.dateCard ? <DateCard /> : <PlaceholderBg />}
                   <div className="mst-card-veil" />
                 </div>
                 <div className="mst-year">{m.year}</div>
