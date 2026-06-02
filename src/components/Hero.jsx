@@ -19,7 +19,7 @@ export default function Hero() {
       </h1>
       <div className="rise d5" style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
         <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '11px', letterSpacing: '.28em', color: 'var(--gold)', textTransform: 'uppercase' }}>Fecha</span>
-        <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '32px', color: 'var(--cream)', lineHeight: 1 }}>Octubre 2026</span>
+        <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '32px', color: 'var(--cream)', lineHeight: 1 }}>10 Octubre</span>
         <span style={{ fontFamily: 'var(--sans)', fontSize: '12px', color: 'var(--cream-faint)', letterSpacing: '.08em' }}>En Santiago</span>
       </div>
       <div className="rise d6" style={{

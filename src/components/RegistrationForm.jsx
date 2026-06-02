@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import BellIcon from './BellIcon'
+import Countdown from './Countdown'
 
 const errStyle = { display: 'block', marginTop: '5px', fontFamily: 'var(--sans)', fontSize: '11px', color: '#c2552f', letterSpacing: '.04em' }
 
@@ -53,10 +54,11 @@ export default function RegistrationForm({ onDone }) {
         <div className="eyebrow" style={{ fontSize: '12px', letterSpacing: '.30em', marginBottom: '14px', marginRight: '-.30em' }}>
           Te anotaste en la lista
         </div>
-        <h3 style={{ fontFamily: 'var(--serif)', fontWeight: 500, fontSize: '48px', lineHeight: 1, margin: '0 0 14px' }}>
+        <h3 style={{ fontFamily: 'var(--serif)', fontWeight: 500, fontSize: '48px', lineHeight: 1, margin: '0 0 20px' }}>
           Listo!
         </h3>
-        <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '20px', color: 'var(--cream-dim)', margin: 0, lineHeight: 1.35 }}>
+        <Countdown />
+        <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '20px', color: 'var(--cream-dim)', margin: '4px 0 0', lineHeight: 1.35 }}>
           Te contactaremos pronto <br /> con los detalles.
         </p>
       </div>
