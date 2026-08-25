@@ -324,7 +324,7 @@ function App(){
   return h('div',{className:'cf-art'+(done?' settled':'')+(collapsed?' collapsed':'')},
     h('div',{className:'cf-scroll',ref:scrollRef,style:{overflowY:done?'auto':'hidden'}},
       h('div',{className:'cf-stage',onClick:()=>started?skip():setStarted(true),
-          style:{height:done?(stageH||CARD_TOP+cardH+26):CARD_TOP+cardH+26}},
+          style:{height:done?(collapsed?140:stageH||CARD_TOP+cardH+26):CARD_TOP+cardH+26}},
 
         /* sobre */
         h('div',{className:'env',style:{opacity:envOp,transform:`translateX(-50%) scale(${started?1:.97+.03*pEnv})`}},
@@ -397,26 +397,19 @@ function App(){
           /* Cuenta conmigo — transferencia */
           view==='bank'&&h('div',{className:'panel'},
             h('div',{className:'p-head'},
-              h('span',{className:'p-eyebrow'},'Datos de transferencia'),
+              h('span',{className:'p-eyebrow'},'Cuenta conmigo'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-
-            h('div',{className:'p-step'},
-              h('div',{className:'p-step-label'},'1 · Transfiere'),
-              h(BankRows),
-              h(CopyBtn,{text:BANK_TEXT})
-            ),
-
-            h('div',{className:'p-step'},
-              h('div',{className:'p-step-label'},'2 · Manda el comprobante'),
-              h('p',{className:'p-note p-note--top'},'Con el pantallazo quedas en la lista.'),
-              h('a',{
-                className:'btn btn-gold',
-                href:`https://wa.me/${WA}?text=${encodeURIComponent(waTransfer)}`,
-                target:'_blank',rel:'noreferrer'
-              },'Mandar comprobante ',h('span',{className:'ar'},'→'))
-            ),
-
+            h('p',{className:'p-note p-note--top'},'Transfiere los datos de abajo y manda el pantallazo por WhatsApp — con eso quedas en la lista.'),
+            h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Datos de transferencia'),
+            h(BankRows),
+            h(CopyBtn,{text:BANK_TEXT}),
+            h('div',{style:{height:'14px'}}),
+            h('a',{
+              className:'btn btn-gold',
+              href:`https://wa.me/${WA}?text=${encodeURIComponent(waTransfer)}`,
+              target:'_blank',rel:'noreferrer'
+            },'Mandar comprobante ',h('span',{className:'ar'},'→')),
             mailNote
           ),
 
@@ -440,20 +433,13 @@ function App(){
               h(BankRows),
               h(CopyBtn,{text:BANK_TEXT+`\n(Aporte: ${amtVal})`}),
               h('div',{style:{height:'12px'}}),
-              h('button',{
-                className:'btn btn-gold',
-                disabled:amt==='Otro'&&!otro.trim(),
-                onClick:()=>setSent(true)
-              },'Listo, mandar ',h('span',{className:'ar'},'→'))
-            ),
-
-            /* post-envío: WA + nota mail (sin pantalla de éxito) */
-            sent&&h(Fragment,null,
-              h('a',{
-                className:'btn btn-ghost',
-                href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,
-                target:'_blank',rel:'noreferrer'
-              },'Escribir por WhatsApp'),
+              (amt==='Otro'&&!otro.trim())
+                ? h('button',{className:'btn btn-gold',disabled:true},'Listo, mandar ',h('span',{className:'ar'},'→'))
+                : h('a',{
+                    className:'btn btn-gold',
+                    href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,
+                    target:'_blank',rel:'noreferrer'
+                  },'Listo, mandar ',h('span',{className:'ar'},'→')),
               mailNote
             )
           ),
