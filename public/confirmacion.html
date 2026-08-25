@@ -38,7 +38,7 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 }
 @keyframes hintPulse{0%,100%{opacity:.45;}50%{opacity:1;}}
 
-/* card collapse transitions */
+/* card stays mini once animation done */
 .settled .card-wrap{transition:top .6s cubic-bezier(.2,.7,.2,1);}
 .card-inner{transition:padding .55s cubic-bezier(.2,.7,.2,1);}
 .c-rule,.c-greet,.c-body,.c-info,.c-foot{
@@ -52,7 +52,6 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .card--mini .c-name-box{transform:scale(.56);transform-origin:top center;}
 .c-name-row{transition:max-height .55s cubic-bezier(.2,.7,.2,1);max-height:260px;}
 .card--mini .c-name-row{margin-top:0;max-height:72px;overflow:hidden;}
-.collapsed .cf-actions{padding-top:16px;}
 
 .cf-grain{
   position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.4;z-index:30;
@@ -60,83 +59,25 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 }
 
 /* sobre */
-.env{
-  position:absolute;left:50%;top:250px;width:312px;height:206px;
-  perspective:900px;z-index:5;will-change:opacity,transform;
-}
-.env-back{
-  position:absolute;inset:0;border-radius:3px;
-  background:linear-gradient(160deg,#2e2617,#201908);
-  border:1px solid rgba(201,161,74,.34);
-  box-shadow:0 34px 70px -26px rgba(0,0,0,.9);
-}
-.env-flap{
-  position:absolute;left:0;top:0;width:100%;height:132px;
-  transform-origin:top center;transform-style:preserve-3d;will-change:transform;
-}
-.env-flap-face{
-  position:absolute;inset:0;
-  background:linear-gradient(175deg,#3a3019,#291f0d);
-  clip-path:polygon(0 0,100% 0,50% 100%);
-  filter:drop-shadow(0 1px 0 rgba(201,161,74,.34)) drop-shadow(0 6px 12px rgba(0,0,0,.55));
-}
-.env-front{
-  position:absolute;left:0;top:0;width:100%;height:100%;z-index:6;
-  background:linear-gradient(168deg,#342b16,#221b0c 70%);
-  clip-path:polygon(0 0,50% 40%,100% 0,100% 100%,0 100%);
-  border-radius:0 0 3px 3px;
-  filter:drop-shadow(0 -1px 0 rgba(201,161,74,.34));
-}
-.env-front::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,161,74,.5),transparent);
-}
+.env{position:absolute;left:50%;top:250px;width:312px;height:206px;perspective:900px;z-index:5;will-change:opacity,transform;}
+.env-back{position:absolute;inset:0;border-radius:3px;background:linear-gradient(160deg,#2e2617,#201908);border:1px solid rgba(201,161,74,.34);box-shadow:0 34px 70px -26px rgba(0,0,0,.9);}
+.env-flap{position:absolute;left:0;top:0;width:100%;height:132px;transform-origin:top center;transform-style:preserve-3d;will-change:transform;}
+.env-flap-face{position:absolute;inset:0;background:linear-gradient(175deg,#3a3019,#291f0d);clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 1px 0 rgba(201,161,74,.34)) drop-shadow(0 6px 12px rgba(0,0,0,.55));}
+.env-front{position:absolute;left:0;top:0;width:100%;height:100%;z-index:6;background:linear-gradient(168deg,#342b16,#221b0c 70%);clip-path:polygon(0 0,50% 40%,100% 0,100% 100%,0 100%);border-radius:0 0 3px 3px;filter:drop-shadow(0 -1px 0 rgba(201,161,74,.34));}
+.env-front::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,161,74,.5),transparent);}
 
-/* sello de lacre */
-.seal-wrap{
-  position:absolute;left:50%;top:114px;width:80px;height:80px;margin-left:-40px;
-  filter:drop-shadow(0 10px 14px rgba(0,0,0,.75));
-}
-.seal-half{
-  position:absolute;inset:0;
-  border-radius:47% 53% 44% 56% / 53% 46% 54% 47%;
-  background:
-    radial-gradient(38% 34% at 33% 26%,rgba(255,214,180,.55),rgba(255,190,150,0) 62%),
-    radial-gradient(120% 110% at 50% 18%,#a8352f 0%,var(--lacre) 46%,#4d1113 100%);
-  box-shadow:
-    inset 0 2px 1px rgba(255,214,178,.34),inset 0 -3px 6px rgba(0,0,0,.55),
-    inset 3px 0 7px rgba(0,0,0,.28),inset -3px 0 7px rgba(0,0,0,.28);
-  display:flex;align-items:center;justify-content:center;will-change:transform;
-}
-.seal-half::before{
-  content:"";position:absolute;inset:7px;border-radius:inherit;
-  box-shadow:inset 0 1px 0 rgba(255,206,166,.24),inset 0 -1px 0 rgba(0,0,0,.4);
-  border:1px solid rgba(255,206,166,.13);
-}
-.seal-mono{
-  position:relative;font-family:var(--serif);font-weight:700;font-size:27px;
-  color:#5d1517;text-shadow:0 1px 0 rgba(255,214,178,.38),0 -1px 2px rgba(0,0,0,.65);
-}
+/* sello */
+.seal-wrap{position:absolute;left:50%;top:114px;width:80px;height:80px;margin-left:-40px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.75));}
+.seal-half{position:absolute;inset:0;border-radius:47% 53% 44% 56%/53% 46% 54% 47%;background:radial-gradient(38% 34% at 33% 26%,rgba(255,214,180,.55),rgba(255,190,150,0) 62%),radial-gradient(120% 110% at 50% 18%,#a8352f 0%,var(--lacre) 46%,#4d1113 100%);box-shadow:inset 0 2px 1px rgba(255,214,178,.34),inset 0 -3px 6px rgba(0,0,0,.55),inset 3px 0 7px rgba(0,0,0,.28),inset -3px 0 7px rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;will-change:transform;}
+.seal-half::before{content:"";position:absolute;inset:7px;border-radius:inherit;box-shadow:inset 0 1px 0 rgba(255,206,166,.24),inset 0 -1px 0 rgba(0,0,0,.4);border:1px solid rgba(255,206,166,.13);}
+.seal-mono{position:relative;font-family:var(--serif);font-weight:700;font-size:27px;color:#5d1517;text-shadow:0 1px 0 rgba(255,214,178,.38),0 -1px 2px rgba(0,0,0,.65);}
 .seal-l{clip-path:inset(0 50% 0 0);}
 .seal-r{clip-path:inset(0 0 0 50%);}
 
 /* tarjeta */
-.card-wrap{
-  position:absolute;left:50%;margin-left:-166px;width:332px;z-index:7;
-  will-change:top,clip-path;
-}
-.card{
-  position:relative;background:linear-gradient(178deg,#f7f2e6,#ece4d2);
-  border-radius:3px;
-  box-shadow:0 30px 70px -28px rgba(0,0,0,.9),0 0 0 1px rgba(138,106,36,.28);
-  overflow:hidden;
-}
-.card-tex{
-  position:absolute;inset:0;pointer-events:none;opacity:.5;
-  background:
-    repeating-linear-gradient(92deg,rgba(138,106,36,.045) 0 1px,transparent 1px 5px),
-    radial-gradient(120% 80% at 50% 0%,rgba(255,255,255,.5),transparent 60%);
-}
+.card-wrap{position:absolute;left:50%;margin-left:-166px;width:332px;z-index:7;will-change:top,clip-path;}
+.card{position:relative;background:linear-gradient(178deg,#f7f2e6,#ece4d2);border-radius:3px;box-shadow:0 30px 70px -28px rgba(0,0,0,.9),0 0 0 1px rgba(138,106,36,.28);overflow:hidden;}
+.card-tex{position:absolute;inset:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(92deg,rgba(138,106,36,.045) 0 1px,transparent 1px 5px),radial-gradient(120% 80% at 50% 0%,rgba(255,255,255,.5),transparent 60%);}
 .card-inner{position:relative;padding:30px 26px 26px;text-align:center;}
 .c-eyebrow{font-family:var(--sans);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:.30em;margin-right:-.30em;color:var(--gold-ink);}
 .c-rule{height:1px;width:46px;border:0;margin:13px auto 0;background:linear-gradient(90deg,transparent,rgba(138,106,36,.75),transparent);}
@@ -153,26 +94,28 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .c-k{font-family:var(--sans);font-weight:600;text-transform:uppercase;font-size:8.5px;letter-spacing:.2em;color:#9a8f76;flex:none;padding-top:3px;}
 .c-v{font-family:var(--serif);font-weight:600;font-size:16px;line-height:1.15;color:#33291a;text-align:right;display:flex;flex-direction:column;gap:2px;}
 .c-sub{font-family:var(--serif);font-style:italic;font-weight:500;font-size:13.5px;line-height:1.25;color:#7d7361;}
+/* "¿y si se estira?" inline en el horario */
+.c-egg-inline{
+  display:inline;font-family:var(--serif);font-style:italic;font-size:11.5px;
+  color:var(--gold-ink);background:none;border:0;padding:0;cursor:pointer;
+  opacity:.7;transition:opacity .2s;text-decoration:none;line-height:1.4;
+}
+.c-egg-inline:hover{opacity:1;}
 .c-foot{font-family:var(--sans);font-weight:600;font-size:10px;letter-spacing:.32em;margin-right:-.32em;color:var(--gold-ink);margin-top:20px;}
 
 /* saltar */
-.cf-skip{
-  position:absolute;top:16px;right:16px;z-index:40;border:0;background:transparent;cursor:pointer;
-  font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--cream-faint);padding:8px 10px;transition:color .3s ease,transform .3s ease;
-}
+.cf-skip{position:absolute;top:16px;right:16px;z-index:40;border:0;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-faint);padding:8px 10px;transition:color .3s ease,transform .3s ease;}
 .cf-skip:hover{color:var(--cream);transform:translateX(2px);}
 
 /* CTAs / paneles */
 .cf-actions{position:relative;z-index:12;padding:8px 26px 40px;}
 .pane{display:flex;flex-direction:column;gap:11px;}
-.btn{
-  width:100%;border:0;cursor:pointer;border-radius:3px;
-  font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.15em;text-transform:uppercase;
-  padding:16px 18px;display:flex;align-items:center;justify-content:center;gap:9px;
-  text-decoration:none;
-  transition:transform .22s cubic-bezier(.2,.7,.2,1),background .22s ease,box-shadow .22s ease,color .22s ease;
-}
+
+/* smooth fade al cambiar de panel */
+.pane-fade{animation:paneFade .28s ease both;}
+@keyframes paneFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+.btn{width:100%;border:0;cursor:pointer;border-radius:3px;font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:16px 18px;display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;transition:transform .22s cubic-bezier(.2,.7,.2,1),background .22s ease,box-shadow .22s ease,color .22s ease;}
 .btn-gold{background:var(--gold);color:#1a1207;box-shadow:0 16px 40px -20px rgba(201,161,74,.9);}
 .btn-gold:hover{background:var(--gold-soft);transform:translateY(-2px);}
 .btn-gold:disabled{background:rgba(201,161,74,.26);color:rgba(26,18,7,.5);box-shadow:none;cursor:not-allowed;transform:none;}
@@ -180,45 +123,53 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .btn-ghost:hover{color:var(--cream);border-color:var(--gold);transform:translateY(-2px);}
 .ar{font-family:var(--serif);font-size:16px;letter-spacing:0;}
 
-.panel{
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
-  border:1px solid var(--line);border-radius:5px;padding:20px 18px;
-  animation:panelIn .5s cubic-bezier(.2,.7,.2,1);
-}
-@keyframes panelIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-.p-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px;}
+.panel{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:5px;padding:20px 18px;animation:panelIn .42s cubic-bezier(.2,.7,.2,1);}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.p-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:16px;}
 .p-eyebrow{font-family:var(--sans);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.24em;color:var(--gold);}
 .p-back{background:none;border:0;cursor:pointer;padding:0;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.1em;color:var(--cream-faint);transition:color .25s ease;}
 .p-back:hover{color:var(--cream);}
-.p-rows{display:flex;flex-direction:column;}
-.p-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid rgba(244,239,226,.08);}
-.p-row span{font-family:var(--sans);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-faint);flex:none;}
-.p-row b{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--cream);text-align:right;}
-.p-row--total{border-bottom:0;padding-top:12px;}
-.p-row--total b{color:var(--gold);font-size:20px;}
-.p-note{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.4;color:var(--cream-dim);margin:14px 0 16px;text-wrap:pretty;}
+
+/* steps */
+.p-step{display:flex;flex-direction:column;gap:4px;margin-bottom:16px;}
+.p-step-label{font-family:var(--sans);font-weight:700;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.p-rows{display:flex;flex-direction:column;border:1px solid rgba(244,239,226,.1);border-radius:4px;overflow:hidden;margin-bottom:10px;}
+.p-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:9px 12px;border-bottom:1px solid rgba(244,239,226,.07);}
+.p-row:last-child{border-bottom:0;}
+.p-row span{font-family:var(--sans);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-faint);flex:none;}
+.p-row b{font-family:var(--serif);font-weight:600;font-size:15.5px;color:var(--cream);text-align:right;}
+.p-row--total b{color:var(--gold);font-size:19px;}
+.p-note{font-family:var(--serif);font-style:italic;font-size:14.5px;line-height:1.4;color:var(--cream-dim);margin:0 0 14px;text-wrap:pretty;}
 .p-note--top{margin-top:0;}
 .p-note b{font-style:normal;color:var(--gold);}
+.p-mail-note{font-family:var(--sans);font-size:11px;letter-spacing:.04em;color:var(--cream-faint);text-align:center;margin-top:10px;line-height:1.5;}
 
+/* copiar datos */
+.btn-copy{width:100%;border:1px solid rgba(244,239,226,.14);border-radius:3px;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-faint);padding:11px 14px;display:flex;align-items:center;justify-content:center;gap:7px;transition:color .2s,border-color .2s,background .2s;}
+.btn-copy:hover{color:var(--cream);border-color:rgba(244,239,226,.3);}
+.btn-copy.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.08);}
+
+/* montos */
 .amt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
 .amt{background:transparent;border:1px solid rgba(244,239,226,.18);border-radius:3px;cursor:pointer;padding:13px 4px;font-family:var(--serif);font-weight:600;font-size:15px;color:var(--cream-dim);transition:all .22s ease;}
 .amt:hover{border-color:var(--gold);color:var(--cream);}
 .amt.on{background:rgba(201,161,74,.14);border-color:var(--gold);color:var(--gold);}
-.amt-input{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(244,239,226,.22);color:var(--cream);font-family:var(--serif);font-size:19px;padding:8px 2px 10px;outline:none;margin-bottom:16px;transition:border-color .3s ease;}
+.amt-input{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(244,239,226,.22);color:var(--cream);font-family:var(--serif);font-size:19px;padding:8px 2px 10px;outline:none;margin-bottom:14px;transition:border-color .3s ease;}
 .amt-input::placeholder{color:var(--cream-faint);font-style:italic;}
 .amt-input:focus{border-color:var(--gold);}
 
+/* datos banco inline (panel No me alcanza) */
+.bank-inline{border-top:1px solid rgba(244,239,226,.1);margin-top:4px;padding-top:14px;animation:panelIn .35s ease;}
+
+/* easter egg panel */
 .panel--ok{text-align:center;}
 .ok-seal{width:52px;height:52px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:2px auto 14px;color:var(--gold);font-size:20px;box-shadow:0 0 30px -8px rgba(201,161,74,.6);}
 .ok-t{font-family:var(--serif);font-size:28px;color:var(--cream);line-height:1;}
 .panel--ok .p-note{margin-bottom:18px;}
-
-.egg{align-self:center;margin-top:4px;background:none;border:0;cursor:pointer;padding:8px 6px;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream-faint);transition:color .3s ease;}
-.egg:hover{color:var(--gold);}
 .egg-row{display:flex;flex-direction:column;gap:9px;}
 
 a{color:var(--gold);}a:hover{color:var(--gold-soft);}
-@media(prefers-reduced-motion:reduce){.panel{animation:none;}.open-hint{animation:none;opacity:.7;}}
+@media(prefers-reduced-motion:reduce){.panel,.pane-fade{animation:none;}.open-hint{animation:none;opacity:.7;}}
 </style>
 </head>
 <body>
@@ -230,24 +181,24 @@ a{color:var(--gold);}a:hover{color:var(--gold-soft);}
 'use strict';
 const {useState,useEffect,useRef,createElement:h,Fragment} = React;
 
-/* --- nombre desde ?n= o ?nombre= --- */
 const _p = new URLSearchParams(location.search);
 const NOMBRE = (_p.get('n') || _p.get('nombre') || '').trim();
 
-/* --- datos del evento --- */
 const EV = {
-  fecha:'10 de octubre',
-  hora:'18:00',
-  horaFin:'01:00',
-  lugar:'Casa OGA',
-  dir:'Av. Santa Cruz 5400, Vitacura',
-  aporte:'$35.000',
+  fecha:'10 de octubre',hora:'18:00',horaFin:'01:00',
+  lugar:'Casa OGA',dir:'Av. Santa Cruz 5400, Vitacura',aporte:'$35.000',
 };
 
-/* PLACEHOLDER — reemplazar con número real */
+/* PLACEHOLDER — reemplazar antes de producción */
 const WA = '56900000000';
 
-/* --- timeline (ms) --- */
+const BANK = {
+  banco:'Banco de Chile',tipo:'Cuenta Corriente',
+  titular:'Comisión Reencuentro 2011',rut:'12.345.678-9',
+  cuenta:'000-12345678-90',email:'reencuentro2011@sgc.cl',
+};
+const BANK_TEXT = `Banco: ${BANK.banco}\nTipo: ${BANK.tipo}\nTitular: ${BANK.titular}\nRUT: ${BANK.rut}\nN° cuenta: ${BANK.cuenta}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
+
 const T={env:{at:100,dur:800},seal:{at:1000,dur:700},flap:{at:1600,dur:950},card:{at:2350,dur:1500},head:{at:3500,dur:700},name:{at:4050,dur:1500},body:{at:5600,dur:700},grid:{at:5950,dur:700},foot:{at:6350,dur:700},cta:{at:6650,dur:800}};
 const TOTAL=7500,POCKET=392,CARD_TOP=46,CARD_START=366;
 
@@ -256,6 +207,34 @@ const smooth=(a,b,x)=>{const t=cl01((x-a)/(b-a));return t*t*(3-2*t);};
 const eOut=u=>1-Math.pow(1-u,3);
 const eIO=u=>u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
 const seg=(ms,k)=>cl01((ms-T[k].at)/T[k].dur);
+
+function useCopy(text){
+  const [copied,setCopied]=useState(false);
+  const copy=()=>{
+    navigator.clipboard&&navigator.clipboard.writeText(text).then(()=>{
+      setCopied(true);setTimeout(()=>setCopied(false),2000);
+    });
+  };
+  return[copied,copy];
+}
+
+function BankRows(){
+  return h('div',{className:'p-rows'},
+    h('div',{className:'p-row'},h('span',null,'Banco'),h('b',null,BANK.banco)),
+    h('div',{className:'p-row'},h('span',null,'Tipo'),h('b',null,BANK.tipo)),
+    h('div',{className:'p-row'},h('span',null,'Titular'),h('b',null,BANK.titular)),
+    h('div',{className:'p-row'},h('span',null,'RUT'),h('b',null,BANK.rut)),
+    h('div',{className:'p-row'},h('span',null,'N° cuenta'),h('b',null,BANK.cuenta)),
+    h('div',{className:'p-row'},h('span',null,'Email'),h('b',null,BANK.email)),
+    h('div',{className:'p-row p-row--total'},h('span',null,'Monto'),h('b',null,EV.aporte))
+  );
+}
+
+function CopyBtn({text}){
+  const[copied,copy]=useCopy(text);
+  return h('button',{className:'btn-copy'+(copied?' copied':''),onClick:copy},
+    copied?'✓ Copiado':'Copiar datos');
+}
 
 function App(){
   const [ms,setMs]=useState(0);
@@ -268,9 +247,16 @@ function App(){
   const [cardH,setCardH]=useState(430);
   const [nameFS,setNameFS]=useState(46);
   const [nameLines,setNameLines]=useState(NOMBRE?[NOMBRE]:[]);
+  const [visible,setVisible]=useState(true);
+
   const cardRef=useRef(null),measRef=useRef(null),scrollRef=useRef(null),t0=useRef(null),iv=useRef(null);
 
-  /* cinemática */
+  /* smooth view switch */
+  const switchView=(v)=>{
+    setVisible(false);
+    setTimeout(()=>{setView(v);setSent(false);setAmt(null);setOtro('');setAfterYes(null);setVisible(true);},200);
+  };
+
   useEffect(()=>{
     if(!started)return;
     setMs(0);t0.current=performance.now();clearInterval(iv.current);
@@ -278,13 +264,11 @@ function App(){
     return()=>clearInterval(iv.current);
   },[started]);
 
-  /* alto real de la tarjeta */
   useEffect(()=>{
     const el=cardRef.current;if(!el||!window.ResizeObserver)return;
     const ro=new ResizeObserver(()=>setCardH(el.offsetHeight));ro.observe(el);return()=>ro.disconnect();
   },[]);
 
-  /* cálculo de líneas del nombre */
   useEffect(()=>{
     if(!NOMBRE){setNameLines([]);return;}
     let cancel=false;
@@ -311,7 +295,10 @@ function App(){
   const skip=()=>{if(ms>=TOTAL)return;clearInterval(iv.current);setMs(TOTAL);};
 
   const pEnv=eOut(seg(ms,'env')),pSeal=seg(ms,'seal'),pFlap=eIO(seg(ms,'flap')),pCard=eIO(seg(ms,'card')),pName=seg(ms,'name');
-  const done=ms>=T.cta.at,collapsed=done&&view!=='cta';
+  const done=ms>=T.cta.at;
+  /* card always mini once done — fixes Volver misalignment */
+  const collapsed=done;
+
   const cardTop=collapsed?16:CARD_TOP+CARD_START*(1-pCard);
   const rawClip=Math.max(0,Math.min(cardH+80,cardH+80-(POCKET-cardTop)));
   const clipBot=collapsed?0:rawClip*(1-smooth(.72,1,pCard));
@@ -321,8 +308,10 @@ function App(){
 
   const first=NOMBRE.split(/\s+/)[0]||'amigo';
   const amtVal=amt==='Otro'?(otro||'—'):amt;
-  const waText=`¡Hola! Soy ${first}. Voy al reencuentro de 15 años (Generación 2011 · Saint George's). Acá va el pantallazo de la transferencia.`;
+  const waTransfer=`¡Hola! Soy ${first}. Voy al reencuentro de 15 años (Generación 2011 · Saint George's). Acá va el comprobante de la transferencia.`;
   const waPartial=`¡Hola! Soy ${first}. Quiero ir al reencuentro de 15 años (Generación 2011). Puedo aportar ${amtVal}.`;
+
+  const mailNote=h('p',{className:'p-mail-note'},'Te llegará un mail de confirmación en los próximos 2 días.');
 
   /* ---- render ---- */
   return h('div',{className:'cf-art'+(done?' settled':'')+(collapsed?' collapsed':'')},
@@ -333,9 +322,7 @@ function App(){
         /* sobre */
         h('div',{className:'env',style:{opacity:envOp,transform:`translateX(-50%) scale(${started?1:.97+.03*pEnv})`}},
           h('div',{className:'env-back'}),
-          h('div',{className:'env-flap',style:{transform:`rotateX(${-172*pFlap}deg)`,zIndex:pFlap>.5?1:7}},
-            h('div',{className:'env-flap-face'})
-          ),
+          h('div',{className:'env-flap',style:{transform:`rotateX(${-172*pFlap}deg)`,zIndex:pFlap>.5?1:7}},h('div',{className:'env-flap-face'})),
           h('div',{className:'seal-wrap',style:{opacity:1-smooth(.55,1,pSeal),zIndex:8}},
             h('div',{className:'seal-half seal-l',style:{transform:`translateX(${-26*pSeal}px) rotate(${-24*pSeal}deg)`}},h('span',{className:'seal-mono'},'SG')),
             h('div',{className:'seal-half seal-r',style:{transform:`translateX(${26*pSeal}px) rotate(${24*pSeal}deg)`}},h('span',{className:'seal-mono'},'SG'))
@@ -353,7 +340,6 @@ function App(){
               h('div',{className:'c-eyebrow',style:rev('head')},"Generación 2011 · Saint George's"),
               h('hr',{className:'c-rule',style:rev('head',true)}),
               h('div',{className:'c-greet',style:rev('head',true)},NOMBRE?'Hola,':'Hola.'),
-
               NOMBRE&&h('div',{className:'c-name-row'},
                 h('span',{className:'c-name-box'},
                   nameLines.map((ln,i)=>{
@@ -366,11 +352,22 @@ function App(){
                   h('span',{className:'c-name-line',style:{transform:`scaleX(${eIO(pName)})`}})
                 )
               ),
-
               h('p',{className:'c-body',style:rev('body',true)},`Nos encontramos en ${EV.lugar} a compartir desde la tarde, con música, comida y lo que depare la noche.`),
-
               h('div',{className:'c-info',style:rev('grid',true)},
-                h('div',{className:'c-irow'},h('span',{className:'c-k'},'Cuándo'),h('span',{className:'c-v'},EV.fecha,h('em',{className:'c-sub'},`${EV.hora} a ${EV.horaFin} hrs`))),
+                /* fila horario con "¿y si se estira?" inline */
+                h('div',{className:'c-irow'},
+                  h('span',{className:'c-k'},'Cuándo'),
+                  h('span',{className:'c-v'},EV.fecha,
+                    h('span',null,
+                      h('em',{className:'c-sub'},`${EV.hora} a ${EV.horaFin} hrs`),
+                      ' ',
+                      h('button',{
+                        className:'c-egg-inline',
+                        onClick:e=>{e.stopPropagation();switchView('after');},
+                      },'¿y si se estira?')
+                    )
+                  )
+                ),
                 h('div',{className:'c-irow'},h('span',{className:'c-k'},'Dónde'),h('span',{className:'c-v'},EV.lugar,h('em',{className:'c-sub'},EV.dir))),
                 h('div',{className:'c-irow'},h('span',{className:'c-k'},'Aporte'),h('span',{className:'c-v'},EV.aporte))
               ),
@@ -380,59 +377,98 @@ function App(){
         )
       ),
 
-      /* CTAs */
+      /* ---- CTAs ---- */
       h('div',{className:'cf-actions',style:rev('cta')},
-        view==='cta'&&h('div',{className:'pane'},
-          h('button',{className:'btn btn-gold',onClick:()=>setView('bank')},'Cuenta conmigo ',h('span',{className:'ar'},'→')),
-          h('button',{className:'btn btn-ghost',onClick:()=>setView('partial')},'No me alcanza'),
-          h('button',{className:'egg',onClick:()=>setView('after')},'¿Y si la noche se estira?')
-        ),
+        h('div',{className:'pane'+(visible?'':' pane-fade'),style:{opacity:visible?1:0,transition:'opacity .18s ease'}},
 
-        view==='bank'&&h('div',{className:'pane panel'},
-          h('div',{className:'p-head'},h('span',{className:'p-eyebrow'},'Para transferir'),h('button',{className:'p-back',onClick:()=>setView('cta')},'← Volver')),
-          h('div',{className:'p-rows'},
-            h('div',{className:'p-row'},h('span',null,'Banco'),h('b',null,'Banco de Chile')),
-            h('div',{className:'p-row'},h('span',null,'Tipo'),h('b',null,'Cuenta Corriente')),
-            h('div',{className:'p-row'},h('span',null,'Titular'),h('b',null,'Comisión Reencuentro 2011')),
-            h('div',{className:'p-row'},h('span',null,'RUT'),h('b',null,'12.345.678-9')),
-            h('div',{className:'p-row'},h('span',null,'N° cuenta'),h('b',null,'000-12345678-90')),
-            h('div',{className:'p-row'},h('span',null,'Email'),h('b',null,'reencuentro2011@sgc.cl')),
-            h('div',{className:'p-row p-row--total'},h('span',null,'Monto'),h('b',null,EV.aporte))
+          /* CTA principal */
+          view==='cta'&&h(Fragment,null,
+            h('button',{className:'btn btn-gold',onClick:()=>switchView('bank')},'Cuenta conmigo ',h('span',{className:'ar'},'→')),
+            h('button',{className:'btn btn-ghost',onClick:()=>switchView('partial')},'No me alcanza')
           ),
-          h('p',{className:'p-note'},'Transfiere y mándanos el pantallazo por WhatsApp. Con eso quedas en la lista.'),
-          h('a',{className:'btn btn-gold',href:`https://wa.me/${WA}?text=${encodeURIComponent(waText)}`,target:'_blank',rel:'noreferrer'},'Mandar pantallazo ',h('span',{className:'ar'},'→'))
-        ),
 
-        view==='partial'&&!sent&&h('div',{className:'pane panel'},
-          h('div',{className:'p-head'},h('span',{className:'p-eyebrow'},'Aporta lo que puedas'),h('button',{className:'p-back',onClick:()=>setView('cta')},'← Volver')),
-          h('p',{className:'p-note p-note--top'},'Queremos que estés, en serio. Elige lo que te acomode y el resto lo vemos entre todos.'),
-          h('div',{className:'amt-grid'},
-            ['$10.000','$15.000','$20.000','$25.000','$30.000','Otro'].map(a=>h('button',{key:a,className:'amt'+(amt===a?' on':''),onClick:()=>setAmt(a)},a))
+          /* Cuenta conmigo — transferencia */
+          view==='bank'&&h('div',{className:'panel'},
+            h('div',{className:'p-head'},
+              h('span',{className:'p-eyebrow'},'Datos de transferencia'),
+              h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
+            ),
+
+            h('div',{className:'p-step'},
+              h('div',{className:'p-step-label'},'1 · Transfiere'),
+              h(BankRows),
+              h(CopyBtn,{text:BANK_TEXT})
+            ),
+
+            h('div',{className:'p-step'},
+              h('div',{className:'p-step-label'},'2 · Manda el comprobante'),
+              h('p',{className:'p-note p-note--top'},'Con el pantallazo quedas en la lista.'),
+              h('a',{
+                className:'btn btn-gold',
+                href:`https://wa.me/${WA}?text=${encodeURIComponent(waTransfer)}`,
+                target:'_blank',rel:'noreferrer'
+              },'Mandar comprobante ',h('span',{className:'ar'},'→'))
+            ),
+
+            mailNote
           ),
-          amt==='Otro'&&h('input',{className:'amt-input',placeholder:'¿Cuánto puedes aportar?',value:otro,onChange:e=>setOtro(e.target.value)}),
-          h('button',{className:'btn btn-gold',disabled:!amt||(amt==='Otro'&&!otro.trim()),onClick:()=>setSent(true)},'Listo, mandar ',h('span',{className:'ar'},'→'))
-        ),
 
-        view==='partial'&&sent&&h('div',{className:'pane panel panel--ok'},
-          h('div',{className:'ok-seal'},'✦'),
-          h('div',{className:'ok-t'},'¡Listo!'),
-          h('p',{className:'p-note'},'Gracias, ',first,'. Te escribimos para cuadrar los ',h('b',null,amtVal),'. Nos vemos en octubre.'),
-          h('a',{className:'btn btn-ghost',href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,target:'_blank',rel:'noreferrer'},'Escribir por WhatsApp')
-        ),
+          /* No me alcanza */
+          view==='partial'&&h('div',{className:'panel'},
+            h('div',{className:'p-head'},
+              h('span',{className:'p-eyebrow'},'Aporta lo que puedas'),
+              h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
+            ),
+            h('p',{className:'p-note p-note--top'},'Queremos que estés, en serio. Elige lo que te acomode — el resto lo cubrimos entre todos.'),
+            h('div',{className:'amt-grid'},
+              ['$10.000','$15.000','$20.000','$25.000','$30.000','Otro'].map(a=>
+                h('button',{key:a,className:'amt'+(amt===a?' on':''),onClick:()=>setAmt(a)},a)
+              )
+            ),
+            amt==='Otro'&&h('input',{className:'amt-input',placeholder:'¿Cuánto puedes aportar?',value:otro,onChange:e=>setOtro(e.target.value)}),
 
-        view==='after'&&h('div',{className:'pane panel'},
-          h('div',{className:'p-head'},h('span',{className:'p-eyebrow'},'Entre nos'),h('button',{className:'p-back',onClick:()=>setView('cta')},'← Volver')),
-          afterYes===null&&h(Fragment,null,
-            h('p',{className:'p-note p-note--top'},`La casa cierra a las ${EV.horaFin}. Si te quedan pilas, estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?`),
-            h('div',{className:'egg-row'},
-              h('button',{className:'btn btn-gold',onClick:()=>setAfterYes(true)},'Anótame'),
-              h('button',{className:'btn btn-ghost',onClick:()=>setAfterYes(false)},'Hasta ahí llego')
+            /* datos bancarios se despliegan al seleccionar monto */
+            amt&&h('div',{className:'bank-inline'},
+              h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Transfiere a'),
+              h(BankRows),
+              h(CopyBtn,{text:BANK_TEXT+`\n(Aporte: ${amtVal})`}),
+              h('div',{style:{height:'12px'}}),
+              h('button',{
+                className:'btn btn-gold',
+                disabled:amt==='Otro'&&!otro.trim(),
+                onClick:()=>setSent(true)
+              },'Listo, mandar ',h('span',{className:'ar'},'→'))
+            ),
+
+            /* post-envío: WA + nota mail (sin pantalla de éxito) */
+            sent&&h(Fragment,null,
+              h('a',{
+                className:'btn btn-ghost',
+                href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,
+                target:'_blank',rel:'noreferrer'
+              },'Escribir por WhatsApp'),
+              mailNote
             )
           ),
-          afterYes!==null&&h('div',{className:'panel--ok'},
-            h('div',{className:'ok-seal'},afterYes?'✦':'✧'),
-            h('div',{className:'ok-t'},afterYes?'Anotado':'Perfecto'),
-            h('p',{className:'p-note'},afterYes?'Si se arma, te escribimos. Sin compromiso.':`Nos vemos hasta la ${EV.horaFin}, que ya es harto.`)
+
+          /* ¿Y si la noche se estira? */
+          view==='after'&&h('div',{className:'panel'},
+            h('div',{className:'p-head'},
+              h('span',{className:'p-eyebrow'},'Entre nos'),
+              h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
+            ),
+            afterYes===null&&h(Fragment,null,
+              h('p',{className:'p-note p-note--top'},`La casa cierra a las ${EV.horaFin}. Si te quedan pilas, estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?`),
+              h('div',{className:'egg-row'},
+                h('button',{className:'btn btn-gold',onClick:()=>setAfterYes(true)},'Anótame'),
+                h('button',{className:'btn btn-ghost',onClick:()=>setAfterYes(false)},'Hasta ahí llego')
+              )
+            ),
+            afterYes!==null&&h('div',{className:'panel--ok'},
+              h('div',{className:'ok-seal'},afterYes?'✦':'✧'),
+              h('div',{className:'ok-t'},afterYes?'Anotado':'Perfecto'),
+              h('p',{className:'p-note'},afterYes?'Si se arma, te escribimos. Sin compromiso.':`Nos vemos hasta la ${EV.horaFin}, que ya es harto.`)
+            )
           )
         )
       ),
