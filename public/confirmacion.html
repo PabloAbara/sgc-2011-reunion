@@ -288,6 +288,9 @@ function App(){
 
   useEffect(()=>{if(cardRef.current)setCardH(cardRef.current.offsetHeight);},[ms,nameLines,nameFS]);
 
+  const pEnv=eOut(seg(ms,'env')),pSeal=seg(ms,'seal'),pFlap=eIO(seg(ms,'flap')),pCard=eIO(seg(ms,'card')),pName=seg(ms,'name');
+  const done=ms>=T.cta.at;
+
   /* lock stage height the moment animation finishes so Volver doesn't jump */
   useEffect(()=>{
     if(done&&!stageH&&cardRef.current)
@@ -300,9 +303,6 @@ function App(){
   },[view,sent]);
 
   const skip=()=>{if(ms>=TOTAL)return;clearInterval(iv.current);setMs(TOTAL);};
-
-  const pEnv=eOut(seg(ms,'env')),pSeal=seg(ms,'seal'),pFlap=eIO(seg(ms,'flap')),pCard=eIO(seg(ms,'card')),pName=seg(ms,'name');
-  const done=ms>=T.cta.at;
   /* mini only when in a panel — card stays full in cta view so user can read it */
   const collapsed=done&&view!=='cta';
 
