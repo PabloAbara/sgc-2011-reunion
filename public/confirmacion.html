@@ -238,6 +238,7 @@ function App(){
   const [otro,setOtro]=useState('');
   const [sent,setSent]=useState(false);
   const [afterYes,setAfterYes]=useState(null);
+  const [afterChoice,setAfterChoice]=useState(null); // persists across switchView
   const [started]=useState(true);
   const [cardH,setCardH]=useState(430);
   const [stageH,setStageH]=useState(0); // locked once animation done
@@ -392,7 +393,8 @@ function App(){
               h('span',{className:'p-eyebrow'},'Cuenta conmigo'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},'Transfiere los datos de abajo y manda el pantallazo por WhatsApp — con eso quedas en la lista.'),
+            afterChoice===true&&h('p',{className:'p-note p-note--top',style:{color:'var(--gold)',fontStyle:'normal',fontSize:'13px'}},'✦ Anotado para el after.'),
+            h('p',{className:'p-note'+(afterChoice===null?' p-note--top':'')},'Transfiere los datos de abajo y manda el pantallazo por WhatsApp — con eso quedas en la lista.'),
             h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Datos de transferencia'),
             h(BankRows),
             h(CopyBtn,{text:BANK_TEXT}),
@@ -442,20 +444,10 @@ function App(){
               h('span',{className:'p-eyebrow'},'Entre nos'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            afterYes===null&&h(Fragment,null,
-              h('p',{className:'p-note p-note--top'},`La casa cierra a las ${EV.horaFin}. Si te quedan pilas, estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?`),
-              h('div',{className:'egg-row'},
-                h('button',{className:'btn btn-gold',onClick:()=>setAfterYes(true)},'Anótame'),
-                h('button',{className:'btn btn-ghost',onClick:()=>setAfterYes(false)},'Hasta ahí llego')
-              )
-            ),
-            afterYes!==null&&h(Fragment,null,
-              h('div',{className:'panel--ok'},
-                h('div',{className:'ok-seal'},afterYes?'✦':'✧'),
-                h('div',{className:'ok-t'},afterYes?'Anotado':'Perfecto'),
-                h('p',{className:'p-note'},afterYes?'Si se arma, te escribimos. Sin compromiso.':`Nos vemos hasta la ${EV.horaFin}, que ya es harto.`)
-              ),
-              h('button',{className:'btn btn-gold',style:{marginTop:'4px'},onClick:()=>switchView('bank')},'Cuenta conmigo ',h('span',{className:'ar'},'→'))
+            h('p',{className:'p-note p-note--top'},`La casa cierra a las ${EV.horaFin}. Si te quedan pilas, estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?`),
+            h('div',{className:'egg-row'},
+              h('button',{className:'btn btn-gold',onClick:()=>{setAfterChoice(true);switchView('bank');}},afterYes===true?'Anótame ✓':'Anótame'),
+              h('button',{className:'btn btn-ghost',onClick:()=>{setAfterChoice(false);switchView('bank');}},'Hasta ahí llego')
             )
           )
         )
