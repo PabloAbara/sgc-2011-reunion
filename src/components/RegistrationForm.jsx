@@ -61,6 +61,20 @@ export default function RegistrationForm({ onDone }) {
         <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '20px', color: 'var(--cream-dim)', margin: '4px 0 0', lineHeight: 1.35 }}>
           Te contactaremos pronto <br /> con los detalles.
         </p>
+        <a
+          href={`/confirmacion.html?n=${encodeURIComponent(data.nombre)}`}
+          style={{
+            display: 'inline-block', marginTop: '28px',
+            fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '11px',
+            letterSpacing: '.22em', textTransform: 'uppercase',
+            color: 'var(--gold)', textDecoration: 'none',
+            opacity: 0.8, transition: 'opacity .2s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = 1}
+          onMouseLeave={e => e.currentTarget.style.opacity = 0.8}
+        >
+          Ver invitación →
+        </a>
       </div>
     )
   }
