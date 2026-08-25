@@ -245,6 +245,7 @@ function App(){
   const [afterYes,setAfterYes]=useState(null);
   const [started,setStarted]=useState(false);
   const [cardH,setCardH]=useState(430);
+  const [stageH,setStageH]=useState(0); // locked once animation done
   const [nameFS,setNameFS]=useState(46);
   const [nameLines,setNameLines]=useState(NOMBRE?[NOMBRE]:[]);
   const [visible,setVisible]=useState(true);
@@ -287,6 +288,12 @@ function App(){
 
   useEffect(()=>{if(cardRef.current)setCardH(cardRef.current.offsetHeight);},[ms,nameLines,nameFS]);
 
+  /* lock stage height the moment animation finishes so Volver doesn't jump */
+  useEffect(()=>{
+    if(done&&!stageH&&cardRef.current)
+      setStageH(CARD_TOP+cardRef.current.offsetHeight+26);
+  },[done]);
+
   useEffect(()=>{
     const el=scrollRef.current;if(!el)return;
     try{el.scrollTo({top:0,behavior:'smooth'});}catch(e){el.scrollTop=0;}
@@ -296,8 +303,8 @@ function App(){
 
   const pEnv=eOut(seg(ms,'env')),pSeal=seg(ms,'seal'),pFlap=eIO(seg(ms,'flap')),pCard=eIO(seg(ms,'card')),pName=seg(ms,'name');
   const done=ms>=T.cta.at;
-  /* card always mini once done — fixes Volver misalignment */
-  const collapsed=done;
+  /* mini only when in a panel — card stays full in cta view so user can read it */
+  const collapsed=done&&view!=='cta';
 
   const cardTop=collapsed?16:CARD_TOP+CARD_START*(1-pCard);
   const rawClip=Math.max(0,Math.min(cardH+80,cardH+80-(POCKET-cardTop)));
@@ -317,7 +324,7 @@ function App(){
   return h('div',{className:'cf-art'+(done?' settled':'')+(collapsed?' collapsed':'')},
     h('div',{className:'cf-scroll',ref:scrollRef,style:{overflowY:done?'auto':'hidden'}},
       h('div',{className:'cf-stage',onClick:()=>started?skip():setStarted(true),
-          style:{height:collapsed?cardH+32:CARD_TOP+cardH+26}},
+          style:{height:done?(stageH||CARD_TOP+cardH+26):CARD_TOP+cardH+26}},
 
         /* sobre */
         h('div',{className:'env',style:{opacity:envOp,transform:`translateX(-50%) scale(${started?1:.97+.03*pEnv})`}},
