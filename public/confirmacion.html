@@ -142,9 +142,9 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .p-mail-note{font-family:var(--sans);font-size:11px;letter-spacing:.04em;color:var(--cream-faint);text-align:center;margin-top:10px;line-height:1.5;}
 
 /* copiar datos — circular pequeño */
-.btn-copy-sm{width:28px;height:28px;border-radius:50%;border:1px solid rgba(244,239,226,.2);background:transparent;cursor:pointer;font-size:13px;color:var(--cream-faint);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .2s,border-color .2s,background .2s;padding:0;}
-.btn-copy-sm:hover{color:var(--cream);border-color:rgba(244,239,226,.35);}
-.btn-copy-sm.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.08);}
+.btn-copy-sm{width:28px;height:28px;border-radius:50%;border:1px solid rgba(244,239,226,.55);background:transparent;cursor:pointer;font-size:13px;color:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .2s,border-color .2s,background .2s;padding:0;}
+.btn-copy-sm:hover{color:#fff;border-color:var(--cream);background:rgba(244,239,226,.08);}
+.btn-copy-sm.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.1);}
 
 /* info card */
 .info-card{display:flex;gap:10px;background:rgba(201,161,74,.06);border:1px solid rgba(201,161,74,.18);border-radius:4px;padding:11px 13px;margin-bottom:14px;}
@@ -172,10 +172,10 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 
 /* toast */
 .toast{position:absolute;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);
-  background:rgba(201,161,74,.96);color:#1a1207;font-family:var(--sans);font-weight:700;
-  font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:10px 22px;
-  border-radius:20px;opacity:0;transition:opacity .3s ease,transform .3s ease;
-  pointer-events:none;z-index:50;white-space:nowrap;}
+  background:rgba(201,161,74,.97);color:#1a1207;font-family:var(--sans);font-weight:600;
+  font-size:11.5px;letter-spacing:.04em;padding:11px 20px;
+  border-radius:12px;opacity:0;transition:opacity .4s ease,transform .35s ease;
+  pointer-events:none;z-index:50;max-width:300px;text-align:center;line-height:1.4;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 a{color:var(--gold);}a:hover{color:var(--gold-soft);}
@@ -255,8 +255,15 @@ function App(){
   const [sent,setSent]=useState(false);
   const [afterYes,setAfterYes]=useState(null);
   const [afterChoice,setAfterChoice]=useState(null); // persists across switchView
-  const [toast,setToast]=useState(false);
-  const showToast=()=>{setToast(true);setTimeout(()=>setToast(false),2200);};
+  const [afterStep,setAfterStep]=useState('q'); // 'q' | 'form'
+  const [afterName,setAfterName]=useState('');
+  const [toast,setToast]=useState('');
+  const toastTimer=useRef(null);
+  const showToast=(msg,dur=2200)=>{
+    clearTimeout(toastTimer.current);
+    setToast(msg);
+    toastTimer.current=setTimeout(()=>setToast(''),dur);
+  };
   const [started]=useState(true);
   const [cardH,setCardH]=useState(430);
   const [stageH,setStageH]=useState(0); // locked once animation done
@@ -269,7 +276,7 @@ function App(){
   /* smooth view switch */
   const switchView=(v)=>{
     setVisible(false);
-    setTimeout(()=>{setView(v);setSent(false);setAmt(null);setOtro('');setAfterYes(null);setVisible(true);},200);
+    setTimeout(()=>{setView(v);setSent(false);setAmt(null);setOtro('');setAfterYes(null);setAfterStep('q');setAfterName('');setVisible(true);},200);
   };
 
   useEffect(()=>{
@@ -428,8 +435,7 @@ function App(){
               h('span',{className:'p-eyebrow'},'Cuenta conmigo'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            afterChoice===true&&h('p',{className:'p-note p-note--top',style:{color:'var(--gold)',fontStyle:'normal',fontSize:'13px'}},'✦ Anotado para el after.'),
-            h('p',{className:'p-note'+(afterChoice===null?' p-note--top':'')},"Transfiere a la cuenta de abajo y manda el pantallazo apretando el botón 'Mandar comprobante'."),
+            h('p',{className:'p-note p-note--top'},"Transfiere a la cuenta de abajo y manda el pantallazo apretando el botón 'Mandar comprobante'."),
             h('div',{className:'info-card'},
               h('span',{className:'info-card-icon'},'💛'),
               h('p',null,'Es posible que algunos compañer@s no puedan pagar la entrada, ¿te animas a poner un extra?')
@@ -475,16 +481,41 @@ function App(){
               h('span',{className:'p-eyebrow'},'Inviten a weas vías'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},
-              'Nos prestaron la casa hasta la 01:00 (',h('em',null,'si nos portamos bien hasta las 02'),
-              '). Si te quedan pilas (y/o te gusta el webeo), estamos viendo dónde seguir, nada confirmado todavía. ¿Te anotamos?'
+
+            afterStep==='q'&&h(Fragment,null,
+              h('p',{className:'p-note p-note--top'},
+                'Nos prestaron la casa hasta la 01:00 (',h('em',null,'si nos portamos bien hasta las 02:00'),
+                '). Si te quedan pilas (y/o te gusta el webeo), estamos viendo dónde seguir, nada confirmado todavía. ¿Te anotamos?'
+              ),
+              h('div',{className:'egg-row'},
+                h('button',{className:'btn btn-gold',onClick:()=>setAfterStep('form')},'Anótame'),
+                h('button',{className:'btn btn-ghost',onClick:()=>switchView('cta')},'Estoy bien')
+              )
             ),
-            h('div',{className:'egg-row'},
-              h('button',{className:'btn btn-gold',onClick:()=>{
-                setAfterChoice(true);showToast();
-                setTimeout(()=>switchView('bank'),1800);
-              }},'Anótame'),
-              h('button',{className:'btn btn-ghost',onClick:()=>switchView('cta')},'Estoy bien')
+
+            afterStep==='form'&&h(Fragment,null,
+              h('p',{className:'p-note p-note--top',style:{marginBottom:'6px'}},'Anota tu nombre:'),
+              h('input',{
+                className:'amt-input',
+                placeholder:'Tu nombre',
+                value:afterName,
+                onChange:e=>setAfterName(e.target.value),
+                autoFocus:true,
+                onKeyDown:e=>{if(e.key==='Enter'&&afterName.trim()){
+                  setAfterChoice(true);
+                  switchView('bank');
+                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',5000),400);
+                }}
+              }),
+              h('button',{
+                className:'btn btn-gold',
+                disabled:!afterName.trim(),
+                onClick:()=>{
+                  setAfterChoice(true);
+                  switchView('bank');
+                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',5000),400);
+                }
+              },'Anótame ',h('span',{className:'ar'},'→'))
             )
           )
         )
@@ -492,7 +523,7 @@ function App(){
 
       h('div',{className:'cf-grain'})
     ),
-    h('div',{className:'toast'+(toast?' show':'')},'Te anotamos ✦'),
+    h('div',{className:'toast'+(toast?' show':'')},toast||''),
     !done&&h('button',{className:'cf-skip',onClick:skip},'Saltar →')
   );
 }
