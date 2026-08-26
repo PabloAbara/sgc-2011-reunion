@@ -10,13 +10,13 @@
   var alias = params.get('alias') || '';
   var dest = 'https://sgc-2011-son-quince.vercel.app/confirmacion.html' + (alias ? '?n=' + encodeURIComponent(alias) : '');
 
-  // Log en background, no esperamos respuesta
   if (alias) {
     var img = new Image();
     img.src = 'https://script.google.com/macros/s/AKfycbxNNXWnhmZeGeJAkkwEVpGIBssHLd7jPx16nM56c6xU4tGGVyMYE3sCiBf1CRnYzQ/exec?alias=' + encodeURIComponent(alias);
+    setTimeout(function() { window.location.replace(dest); }, 400);
+  } else {
+    window.location.replace(dest);
   }
-
-  window.location.replace(dest);
 })();
 </script>
 </head>
