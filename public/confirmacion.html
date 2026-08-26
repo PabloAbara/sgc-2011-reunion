@@ -141,11 +141,11 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .p-note b{font-style:normal;color:var(--gold);}
 .p-mail-note{font-family:var(--sans);font-size:11px;letter-spacing:.04em;color:var(--cream-faint);text-align:center;margin-top:10px;line-height:1.5;}
 
-/* copiar datos — pill */
-.btn-copy-pill{width:100%;border:1px solid rgba(244,239,226,.22);border-radius:20px;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);padding:9px 12px 9px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:color .2s,border-color .2s,background .2s;}
+/* copiar datos — pill centrada */
+.btn-copy-pill{width:100%;border:1px solid rgba(244,239,226,.22);border-radius:20px;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);padding:9px 16px;display:flex;align-items:center;justify-content:center;gap:7px;transition:color .2s,border-color .2s,background .2s;}
 .btn-copy-pill:hover{border-color:rgba(244,239,226,.45);background:rgba(244,239,226,.04);}
 .btn-copy-pill.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.08);}
-.btn-copy-pill .copy-icon{font-size:14px;opacity:.8;flex-shrink:0;}
+.btn-copy-pill .copy-icon{font-size:16px;line-height:1;}
 
 /* info card */
 .info-card{display:flex;gap:10px;background:rgba(201,161,74,.06);border:1px solid rgba(201,161,74,.18);border-radius:4px;padding:11px 13px;margin-bottom:14px;}
@@ -171,13 +171,11 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .panel--ok .p-note{margin-bottom:18px;}
 .egg-row{display:flex;flex-direction:column;gap:9px;}
 
-/* toast */
-.toast{position:absolute;top:20px;left:50%;transform:translateX(-50%) translateY(-10px);
-  background:rgba(201,161,74,.97);color:#1a1207;font-family:var(--sans);font-weight:600;
-  font-size:11.5px;letter-spacing:.04em;padding:11px 20px;
-  border-radius:12px;opacity:0;transition:opacity .4s ease,transform .35s ease;
-  pointer-events:none;z-index:50;max-width:300px;text-align:center;line-height:1.4;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);z-index:60;}
+/* toast inline — aparece al tope de cf-actions, mismo ancho que los paneles */
+.toast-wrap{overflow:hidden;max-height:0;opacity:0;transition:max-height .38s ease,opacity .3s ease,margin-bottom .38s ease;margin-bottom:0;}
+.toast-wrap.show{max-height:100px;opacity:1;margin-bottom:10px;}
+.toast-inner{background:rgba(201,161,74,.97);color:#1a1207;font-family:var(--sans);font-weight:600;
+  font-size:12px;letter-spacing:.02em;padding:11px 16px;border-radius:8px;text-align:center;line-height:1.45;}
 
 a{color:var(--gold);}a:hover{color:var(--gold-soft);}
 @media(prefers-reduced-motion:reduce){.open-hint{animation:none;opacity:.7;}}
@@ -236,7 +234,7 @@ function BankRows({extra}){
     h('div',{className:'p-row'},h('span',null,'Email'),h('b',null,BANK.email)),
     h('div',{className:'p-row p-row--total'},h('span',null,'Monto'),
       h('b',null,EV.aporte,
-        extra&&h('em',{style:{display:'block',fontFamily:'var(--serif)',fontStyle:'italic',fontWeight:'normal',fontSize:'11px',color:'var(--cream-faint)',marginTop:'2px'}},'O más si es que puedes apañar')
+        extra&&h('em',{style:{display:'block',fontFamily:'var(--serif)',fontStyle:'italic',fontWeight:'normal',fontSize:'13px',color:'var(--cream)',marginTop:'3px'}},'O más, si es que puedes apañar')
       )
     )
   );
@@ -398,24 +396,25 @@ function App(){
                 h('div',{className:'c-irow'},
                   h('span',{className:'c-k'},'Dónde'),
                   h('span',{className:'c-v'},EV.lugar,
-                    h('em',{className:'c-sub',style:{display:'block'}},'Estacionamiento nuevo del colegio'),
+                    h('em',{className:'c-sub',style:{display:'block',fontSize:'11px'}},'Estacionamiento nuevo del colegio'),
                     h('span',{style:{display:'flex',alignItems:'center',gap:'5px',justifyContent:'flex-end'}},
                       h('em',{className:'c-sub'},EV.dir),
                       h('a',{
                         href:'https://maps.app.goo.gl/g1SiCXwq41Pxhcfb8',
                         target:'_blank',rel:'noreferrer',
+                        title:'Ver en el mapa',
                         style:{display:'inline-flex',alignItems:'center',justifyContent:'center',
-                          width:'18px',height:'18px',borderRadius:'50%',flexShrink:0,
+                          width:'20px',height:'20px',borderRadius:'50%',flexShrink:0,
                           background:'rgba(201,161,74,.15)',border:'1px solid rgba(201,161,74,.3)',
-                          color:'var(--gold)',fontSize:'9px',textDecoration:'none',lineHeight:1}
-                      },'↗')
+                          color:'var(--gold)',fontSize:'11px',textDecoration:'none',lineHeight:1}
+                      },'📍')
                     )
                   )
                 ),
                 h('div',{className:'c-irow'},
                   h('span',{className:'c-k'},'Aporte'),
                   h('span',{className:'c-v'},EV.aporte,
-                    h('em',{className:'c-sub',style:{fontSize:'11px',opacity:.85}},'Incluye bar abierto, foodtruck, DJ y alguna sorpresilla')
+                    h('em',{className:'c-sub',style:{textAlign:'right'}},'Incluye bar abierto, foodtruck, DJ y alguna sorpresilla')
                   )
                 )
               ),
@@ -427,6 +426,9 @@ function App(){
 
       /* ---- CTAs ---- */
       h('div',{className:'cf-actions',style:rev('cta')},
+        h('div',{className:'toast-wrap'+(toast?' show':'')},
+          h('div',{className:'toast-inner'},toast||'')
+        ),
         h('div',{className:'pane',style:{opacity:visible?1:0,transition:'opacity .2s ease'}},
 
           /* CTA principal */
@@ -527,7 +529,6 @@ function App(){
 
       h('div',{className:'cf-grain'})
     ),
-    h('div',{className:'toast'+(toast?' show':'')},toast||''),
     !done&&h('button',{className:'cf-skip',onClick:skip},'Saltar →')
   );
 }
