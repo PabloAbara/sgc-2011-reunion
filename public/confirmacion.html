@@ -171,11 +171,13 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .panel--ok .p-note{margin-bottom:18px;}
 .egg-row{display:flex;flex-direction:column;gap:9px;}
 
-/* toast inline — aparece al tope de cf-actions, mismo ancho que los paneles */
-.toast-wrap{overflow:hidden;max-height:0;opacity:0;transition:max-height .38s ease,opacity .3s ease,margin-bottom .38s ease;margin-bottom:0;}
-.toast-wrap.show{max-height:100px;opacity:1;margin-bottom:10px;}
-.toast-inner{background:rgba(201,161,74,.97);color:#1a1207;font-family:var(--sans);font-weight:600;
-  font-size:12px;letter-spacing:.02em;padding:11px 16px;border-radius:8px;text-align:center;line-height:1.45;}
+/* toast — banner edge-to-edge de la card */
+.toast-wrap{overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .5s cubic-bezier(.2,.7,.2,1),opacity .35s ease,margin .5s ease;
+  margin:0 -26px 0;}
+.toast-wrap.show{max-height:140px;opacity:1;margin:0 -26px 14px;}
+.toast-inner{background:var(--gold);color:#1a1207;font-family:var(--sans);font-weight:700;
+  font-size:13.5px;letter-spacing:.02em;padding:18px 26px;text-align:center;line-height:1.5;}
 
 a{color:var(--gold);}a:hover{color:var(--gold-soft);}
 @media(prefers-reduced-motion:reduce){.open-hint{animation:none;opacity:.7;}}
@@ -234,7 +236,7 @@ function BankRows({extra}){
     h('div',{className:'p-row'},h('span',null,'Email'),h('b',null,BANK.email)),
     h('div',{className:'p-row p-row--total'},h('span',null,'Monto'),
       h('b',null,EV.aporte,
-        extra&&h('em',{style:{display:'block',fontFamily:'var(--serif)',fontStyle:'italic',fontWeight:'normal',fontSize:'13px',color:'var(--cream)',marginTop:'3px'}},'O más, si es que puedes apañar')
+        extra&&h('em',{style:{display:'block',fontFamily:'var(--serif)',fontStyle:'italic',fontWeight:'normal',fontSize:'13px',color:'var(--gold)',marginTop:'3px'}},'O más, si es que puedes apañar')
       )
     )
   );
@@ -396,25 +398,29 @@ function App(){
                 h('div',{className:'c-irow'},
                   h('span',{className:'c-k'},'Dónde'),
                   h('span',{className:'c-v'},EV.lugar,
-                    h('em',{className:'c-sub',style:{display:'block',fontSize:'11px'}},'Estacionamiento nuevo del colegio'),
+                    h('em',{className:'c-sub',style:{display:'block'}},'Estacionamiento nuevo del colegio'),
                     h('span',{style:{display:'flex',alignItems:'center',gap:'5px',justifyContent:'flex-end'}},
-                      h('em',{className:'c-sub'},EV.dir),
+                      h('em',{className:'c-sub',style:{fontSize:'11px',opacity:.8}},EV.dir),
                       h('a',{
                         href:'https://maps.app.goo.gl/g1SiCXwq41Pxhcfb8',
                         target:'_blank',rel:'noreferrer',
                         title:'Ver en el mapa',
                         style:{display:'inline-flex',alignItems:'center',justifyContent:'center',
-                          width:'20px',height:'20px',borderRadius:'50%',flexShrink:0,
-                          background:'rgba(201,161,74,.15)',border:'1px solid rgba(201,161,74,.3)',
-                          color:'var(--gold)',fontSize:'11px',textDecoration:'none',lineHeight:1}
-                      },'📍')
+                          width:'18px',height:'18px',borderRadius:'50%',flexShrink:0,
+                          background:'rgba(201,161,74,.1)',border:'1px solid rgba(201,161,74,.2)',
+                          color:'var(--gold-ink)',textDecoration:'none',opacity:.7}
+                      },
+                        h('svg',{width:'8',height:'10',viewBox:'0 0 8 10',fill:'currentColor'},
+                          h('path',{d:'M4 0C1.79 0 0 1.79 0 4c0 2.83 4 6 4 6s4-3.17 4-6c0-2.21-1.79-4-4-4zm0 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z'})
+                        )
+                      )
                     )
                   )
                 ),
                 h('div',{className:'c-irow'},
                   h('span',{className:'c-k'},'Aporte'),
                   h('span',{className:'c-v'},EV.aporte,
-                    h('em',{className:'c-sub',style:{textAlign:'right'}},'Incluye bar abierto, foodtruck, DJ y alguna sorpresilla')
+                    h('em',{className:'c-sub',style:{textAlign:'right'}},'Incluye bar abierto, foodtruck, DJ',h('br'),'y alguna sorpresilla')
                   )
                 )
               ),
