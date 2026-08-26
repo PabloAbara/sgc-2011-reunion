@@ -514,7 +514,7 @@ function App(){
                 onKeyDown:e=>{if(e.key==='Enter'&&afterName.trim()){
                   setAfterChoice(true);
                   switchView('bank');
-                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',5000),400);
+                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',4000),400);
                 }}
               }),
               h('button',{
@@ -523,7 +523,7 @@ function App(){
                 onClick:()=>{
                   setAfterChoice(true);
                   switchView('bank');
-                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',5000),400);
+                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',4000),400);
                 }
               },'Anótame ',h('span',{className:'ar'},'→'))
             )
