@@ -124,8 +124,8 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .panel{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:5px;padding:20px 18px;}
 .p-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:16px;}
 .p-eyebrow{font-family:var(--sans);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.24em;color:var(--gold);}
-.p-back{background:none;border:0;cursor:pointer;padding:0;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.1em;color:var(--cream-faint);transition:color .25s ease;}
-.p-back:hover{color:var(--cream);}
+.p-back{background:none;border:1px solid rgba(244,239,226,.18);border-radius:20px;cursor:pointer;padding:4px 12px;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.08em;color:var(--cream-dim);transition:color .2s,border-color .2s,background .2s;}
+.p-back:hover{color:var(--cream);border-color:rgba(244,239,226,.4);background:rgba(244,239,226,.04);}
 
 /* steps */
 .p-step{display:flex;flex-direction:column;gap:4px;margin-bottom:16px;}
@@ -141,10 +141,11 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .p-note b{font-style:normal;color:var(--gold);}
 .p-mail-note{font-family:var(--sans);font-size:11px;letter-spacing:.04em;color:var(--cream-faint);text-align:center;margin-top:10px;line-height:1.5;}
 
-/* copiar datos — circular pequeño */
-.btn-copy-sm{width:28px;height:28px;border-radius:50%;border:1px solid rgba(244,239,226,.55);background:transparent;cursor:pointer;font-size:13px;color:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .2s,border-color .2s,background .2s;padding:0;}
-.btn-copy-sm:hover{color:#fff;border-color:var(--cream);background:rgba(244,239,226,.08);}
-.btn-copy-sm.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.1);}
+/* copiar datos — pill */
+.btn-copy-pill{width:100%;border:1px solid rgba(244,239,226,.22);border-radius:20px;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);padding:9px 12px 9px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:color .2s,border-color .2s,background .2s;}
+.btn-copy-pill:hover{border-color:rgba(244,239,226,.45);background:rgba(244,239,226,.04);}
+.btn-copy-pill.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.08);}
+.btn-copy-pill .copy-icon{font-size:14px;opacity:.8;flex-shrink:0;}
 
 /* info card */
 .info-card{display:flex;gap:10px;background:rgba(201,161,74,.06);border:1px solid rgba(201,161,74,.18);border-radius:4px;padding:11px 13px;margin-bottom:14px;}
@@ -171,12 +172,12 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .egg-row{display:flex;flex-direction:column;gap:9px;}
 
 /* toast */
-.toast{position:absolute;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);
+.toast{position:absolute;top:20px;left:50%;transform:translateX(-50%) translateY(-10px);
   background:rgba(201,161,74,.97);color:#1a1207;font-family:var(--sans);font-weight:600;
   font-size:11.5px;letter-spacing:.04em;padding:11px 20px;
   border-radius:12px;opacity:0;transition:opacity .4s ease,transform .35s ease;
   pointer-events:none;z-index:50;max-width:300px;text-align:center;line-height:1.4;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);z-index:60;}
 
 a{color:var(--gold);}a:hover{color:var(--gold-soft);}
 @media(prefers-reduced-motion:reduce){.open-hint{animation:none;opacity:.7;}}
@@ -203,7 +204,7 @@ const WA = '56962383948';
 
 const BANK = {
   banco:'Banco BICE',tipo:'Cuenta Corriente',
-  rut:'18.397.069-0',cuenta:'',email:'generacion2011sgc@gmail.com',
+  rut:'18.397.069-0',cuenta:'21735329',email:'generacion2011sgc@gmail.com',
 };
 const BANK_TEXT = `Banco: ${BANK.banco}\nTipo: ${BANK.tipo}\nRUT: ${BANK.rut}${BANK.cuenta?'\nN° cuenta: '+BANK.cuenta:''}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
 
@@ -243,8 +244,9 @@ function BankRows({extra}){
 
 function CopyBtn({text}){
   const[copied,copy]=useCopy(text);
-  return h('button',{className:'btn-copy-sm'+(copied?' copied':''),onClick:copy,title:copied?'Copiado':'Copiar datos'},
-    copied?'✓':'⎘');
+  return h('button',{className:'btn-copy-pill'+(copied?' copied':''),onClick:copy},
+    copied?'✓ Copiado':'Copiar datos',
+    h('span',{className:'copy-icon'},copied?'✓':'⎘'));
 }
 
 function App(){
@@ -335,7 +337,7 @@ function App(){
 
   const first=NOMBRE.split(/\s+/)[0]||'amigo';
   const amtVal=amt==='Otro'?(otro||'—'):amt;
-  const waTransfer=`Confirmo para el evento 🤩`;
+  const waTransfer=`Confirmo para el evento de 15 años 🤩, y acá va mi pantallazo`;
   const waPartial=`Oye me complica poner las 35, pero me pongo con : $`;
 
   const mailNote=h('p',{className:'p-mail-note'},'Te llegará un mensaje de confirmación dentro de los próximos días.');
@@ -396,20 +398,24 @@ function App(){
                 h('div',{className:'c-irow'},
                   h('span',{className:'c-k'},'Dónde'),
                   h('span',{className:'c-v'},EV.lugar,
-                    h('a',{
-                      className:'c-sub',href:'https://maps.app.goo.gl/g1SiCXwq41Pxhcfb8',
-                      target:'_blank',rel:'noreferrer',
-                      style:{color:'inherit',textDecoration:'none'}
-                    },
-                      EV.dir,
-                      h('em',{style:{display:'block',fontSize:'11.5px',opacity:.75}},"(Est. 'nuevo' del colegio Saint George)")
+                    h('em',{className:'c-sub',style:{display:'block'}},'Estacionamiento nuevo del colegio'),
+                    h('span',{style:{display:'flex',alignItems:'center',gap:'5px',justifyContent:'flex-end'}},
+                      h('em',{className:'c-sub'},EV.dir),
+                      h('a',{
+                        href:'https://maps.app.goo.gl/g1SiCXwq41Pxhcfb8',
+                        target:'_blank',rel:'noreferrer',
+                        style:{display:'inline-flex',alignItems:'center',justifyContent:'center',
+                          width:'18px',height:'18px',borderRadius:'50%',flexShrink:0,
+                          background:'rgba(201,161,74,.15)',border:'1px solid rgba(201,161,74,.3)',
+                          color:'var(--gold)',fontSize:'9px',textDecoration:'none',lineHeight:1}
+                      },'↗')
                     )
                   )
                 ),
                 h('div',{className:'c-irow'},
                   h('span',{className:'c-k'},'Aporte'),
                   h('span',{className:'c-v'},EV.aporte,
-                    h('em',{className:'c-sub'},'Incluye bar abierto, foodtruck, DJ y alguna sorpresilla')
+                    h('em',{className:'c-sub',style:{fontSize:'11px',opacity:.85}},'Incluye bar abierto, foodtruck, DJ y alguna sorpresilla')
                   )
                 )
               ),
@@ -440,12 +446,11 @@ function App(){
               h('span',{className:'info-card-icon'},'💛'),
               h('p',null,'Es posible que algunos compañer@s no puedan pagar la entrada, ¿te animas a poner un extra?')
             ),
-            h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'8px'}},
-              h('div',{className:'p-step-label',style:{margin:0}},'Datos de transferencia'),
-              h(CopyBtn,{text:BANK_TEXT})
-            ),
+            h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Datos de transferencia'),
             h(BankRows,{extra:true}),
-            h('div',{style:{height:'14px'}}),
+            h('div',{style:{height:'10px'}}),
+            h(CopyBtn,{text:BANK_TEXT}),
+            h('div',{style:{height:'10px'}}),
             h('a',{
               className:'btn btn-gold',
               href:`https://wa.me/${WA}?text=${encodeURIComponent(waTransfer)}`,
@@ -460,13 +465,12 @@ function App(){
               h('span',{className:'p-eyebrow'},'Aporta lo que puedas'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},'No queremos que nadie se quede afuera por plata. Pon lo que te acomode — el resto lo cubrimos entre todos.'),
-            h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'8px'}},
-              h('div',{className:'p-step-label',style:{margin:0}},'Transfiere a'),
-              h(CopyBtn,{text:BANK_TEXT})
-            ),
+            h('p',{className:'p-note p-note--top'},'No queremos que nadie se quede afuera por plata. Pon lo que puedas, el resto lo cubrimos entre todos.'),
+            h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Transfiere a'),
             h(BankRows),
-            h('div',{style:{height:'12px'}}),
+            h('div',{style:{height:'10px'}}),
+            h(CopyBtn,{text:BANK_TEXT}),
+            h('div',{style:{height:'10px'}}),
             h('a',{
               className:'btn btn-gold',
               href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,
