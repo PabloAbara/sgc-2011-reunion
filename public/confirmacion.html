@@ -71,8 +71,8 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .seal-half{position:absolute;inset:0;border-radius:47% 53% 44% 56%/53% 46% 54% 47%;background:radial-gradient(38% 34% at 33% 26%,rgba(255,214,180,.55),rgba(255,190,150,0) 62%),radial-gradient(120% 110% at 50% 18%,#a8352f 0%,var(--lacre) 46%,#4d1113 100%);box-shadow:inset 0 2px 1px rgba(255,214,178,.34),inset 0 -3px 6px rgba(0,0,0,.55),inset 3px 0 7px rgba(0,0,0,.28),inset -3px 0 7px rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;will-change:transform;}
 .seal-half::before{content:"";position:absolute;inset:7px;border-radius:inherit;box-shadow:inset 0 1px 0 rgba(255,206,166,.24),inset 0 -1px 0 rgba(0,0,0,.4);border:1px solid rgba(255,206,166,.13);}
 .seal-mono{position:relative;font-family:var(--serif);font-weight:700;font-size:27px;color:#5d1517;text-shadow:0 1px 0 rgba(255,214,178,.38),0 -1px 2px rgba(0,0,0,.65);}
-.seal-l{clip-path:inset(0 50% 0 0);}
-.seal-r{clip-path:inset(0 0 0 50%);}
+.seal-lw{position:absolute;inset:0;clip-path:polygon(0 0,50.5% 0,49% 14%,51.5% 28%,48.5% 44%,51% 58%,48.5% 72%,51% 87%,50.5% 100%,0 100%);}
+.seal-rw{position:absolute;inset:0;clip-path:polygon(49.5% 0,100% 0,100% 100%,49.5% 100%,51% 87%,48.5% 72%,51% 58%,48.5% 44%,51.5% 28%,49% 14%);}
 
 /* tarjeta */
 .card-wrap{position:absolute;left:50%;margin-left:-166px;width:332px;z-index:7;will-change:top,clip-path;}
@@ -204,12 +204,12 @@ const EV = {
 const WA = '56962383948';
 
 const BANK = {
-  banco:'Banco BICE',tipo:'Cuenta Corriente',
+  titular:'Generacion 2011',banco:'Banco BICE',tipo:'Cuenta Corriente',
   rut:'18.397.069-0',cuenta:'21735329',email:'generacion2011sgc@gmail.com',
 };
 const AFTER_URL='https://script.google.com/macros/s/AKfycbyoKJkqAN0UV5oCkD-81bvv0RNW3CgZG95tbdTZ4o44VRS9AzIYd2NV-Q9GCSevxfI/exec';
 const AFTER_TOKEN='sgc2011xK9m';
-const BANK_TEXT = `Banco: ${BANK.banco}\nTipo: ${BANK.tipo}\nRUT: ${BANK.rut}${BANK.cuenta?'\nN° cuenta: '+BANK.cuenta:''}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
+const BANK_TEXT = `Titular: ${BANK.titular}\nBanco: ${BANK.banco}\nTipo: ${BANK.tipo}\nRUT: ${BANK.rut}${BANK.cuenta?'\nN° cuenta: '+BANK.cuenta:''}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
 
 const T={env:{at:100,dur:800},seal:{at:1000,dur:700},flap:{at:1600,dur:950},card:{at:2350,dur:1500},head:{at:3500,dur:700},name:{at:4050,dur:1500},body:{at:5600,dur:700},grid:{at:5950,dur:700},foot:{at:6350,dur:700},cta:{at:6650,dur:800}};
 const TOTAL=7500,POCKET=392,CARD_TOP=46,CARD_START=366;
@@ -232,6 +232,7 @@ function useCopy(text){
 
 function BankRows({extra}){
   return h('div',{className:'p-rows'},
+    h('div',{className:'p-row'},h('span',null,'Titular'),h('b',null,BANK.titular)),
     h('div',{className:'p-row'},h('span',null,'Banco'),h('b',null,BANK.banco)),
     h('div',{className:'p-row'},h('span',null,'Tipo'),h('b',null,BANK.tipo)),
     h('div',{className:'p-row'},h('span',null,'RUT'),h('b',null,BANK.rut)),
@@ -356,8 +357,8 @@ function App(){
           h('div',{className:'env-back'}),
           h('div',{className:'env-flap',style:{transform:`rotateX(${-172*pFlap}deg)`,zIndex:pFlap>.5?1:7}},h('div',{className:'env-flap-face'})),
           h('div',{className:'seal-wrap',style:{opacity:1-smooth(.55,1,pSeal),zIndex:8}},
-            h('div',{className:'seal-half seal-l',style:{transform:`translateX(${-26*pSeal}px) rotate(${-24*pSeal}deg)`}},h('span',{className:'seal-mono'},'SG')),
-            h('div',{className:'seal-half seal-r',style:{transform:`translateX(${26*pSeal}px) rotate(${24*pSeal}deg)`}},h('span',{className:'seal-mono'},'SG'))
+            h('div',{className:'seal-lw',style:{transform:`translateX(${-26*pSeal}px) rotate(${-24*pSeal}deg)`,willChange:'transform'}},h('div',{className:'seal-half'},h('span',{className:'seal-mono'},'SG'))),
+            h('div',{className:'seal-rw',style:{transform:`translateX(${26*pSeal}px) rotate(${24*pSeal}deg)`,willChange:'transform'}},h('div',{className:'seal-half'},h('span',{className:'seal-mono'},'SG')))
           ),
           h('div',{className:'env-front'})
         ),
