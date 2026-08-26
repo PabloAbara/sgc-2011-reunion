@@ -94,13 +94,15 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .c-k{font-family:var(--sans);font-weight:600;text-transform:uppercase;font-size:8.5px;letter-spacing:.2em;color:#9a8f76;flex:none;padding-top:3px;}
 .c-v{font-family:var(--serif);font-weight:600;font-size:16px;line-height:1.15;color:#33291a;text-align:right;display:flex;flex-direction:column;gap:2px;}
 .c-sub{font-family:var(--serif);font-style:italic;font-weight:500;font-size:13.5px;line-height:1.25;color:#7d7361;}
-/* "¿y si se estira?" inline en el horario */
+/* "¿y si se estira?" pill */
 .c-egg-inline{
-  display:inline;font-family:var(--serif);font-style:italic;font-size:11.5px;
-  color:var(--gold-ink);background:none;border:0;padding:0;cursor:pointer;
-  opacity:.7;transition:opacity .2s;text-decoration:none;line-height:1.4;
+  display:inline-flex;align-items:center;vertical-align:middle;margin-left:5px;
+  font-family:var(--sans);font-weight:600;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);background:rgba(201,161,74,.1);border:1px solid rgba(201,161,74,.28);
+  padding:3px 8px;border-radius:20px;cursor:pointer;white-space:nowrap;
+  transition:background .2s,border-color .2s;
 }
-.c-egg-inline:hover{opacity:1;}
+.c-egg-inline:hover{background:rgba(201,161,74,.2);border-color:rgba(201,161,74,.5);}
 .c-foot{font-family:var(--sans);font-weight:600;font-size:10px;letter-spacing:.32em;margin-right:-.32em;color:var(--gold-ink);margin-top:20px;}
 
 /* saltar */
@@ -139,10 +141,15 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .p-note b{font-style:normal;color:var(--gold);}
 .p-mail-note{font-family:var(--sans);font-size:11px;letter-spacing:.04em;color:var(--cream-faint);text-align:center;margin-top:10px;line-height:1.5;}
 
-/* copiar datos */
-.btn-copy{width:100%;border:1px solid rgba(244,239,226,.14);border-radius:3px;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-faint);padding:11px 14px;display:flex;align-items:center;justify-content:center;gap:7px;transition:color .2s,border-color .2s,background .2s;}
-.btn-copy:hover{color:var(--cream);border-color:rgba(244,239,226,.3);}
-.btn-copy.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.08);}
+/* copiar datos — circular pequeño */
+.btn-copy-sm{width:28px;height:28px;border-radius:50%;border:1px solid rgba(244,239,226,.2);background:transparent;cursor:pointer;font-size:13px;color:var(--cream-faint);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .2s,border-color .2s,background .2s;padding:0;}
+.btn-copy-sm:hover{color:var(--cream);border-color:rgba(244,239,226,.35);}
+.btn-copy-sm.copied{color:var(--gold);border-color:var(--gold);background:rgba(201,161,74,.08);}
+
+/* info card */
+.info-card{display:flex;gap:10px;background:rgba(201,161,74,.06);border:1px solid rgba(201,161,74,.18);border-radius:4px;padding:11px 13px;margin-bottom:14px;}
+.info-card p{margin:0;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--cream-dim);line-height:1.45;}
+.info-card-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
 
 /* montos */
 .amt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
@@ -184,15 +191,13 @@ const EV = {
   lugar:'Casa OGA',dir:'Av. Santa Cruz 5400, Vitacura',aporte:'$35.000',
 };
 
-/* PLACEHOLDER — reemplazar antes de producción */
-const WA = '56900000000';
+const WA = '56962383948';
 
 const BANK = {
-  banco:'Banco de Chile',tipo:'Cuenta Corriente',
-  titular:'Comisión Reencuentro 2011',rut:'12.345.678-9',
-  cuenta:'000-12345678-90',email:'reencuentro2011@sgc.cl',
+  banco:'Banco BICE',tipo:'Cuenta Corriente',
+  rut:'18.397.069-0',cuenta:'',email:'generacion2011sgc@gmail.com',
 };
-const BANK_TEXT = `Banco: ${BANK.banco}\nTipo: ${BANK.tipo}\nTitular: ${BANK.titular}\nRUT: ${BANK.rut}\nN° cuenta: ${BANK.cuenta}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
+const BANK_TEXT = `Banco: ${BANK.banco}\nTipo: ${BANK.tipo}\nRUT: ${BANK.rut}${BANK.cuenta?'\nN° cuenta: '+BANK.cuenta:''}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
 
 const T={env:{at:100,dur:800},seal:{at:1000,dur:700},flap:{at:1600,dur:950},card:{at:2350,dur:1500},head:{at:3500,dur:700},name:{at:4050,dur:1500},body:{at:5600,dur:700},grid:{at:5950,dur:700},foot:{at:6350,dur:700},cta:{at:6650,dur:800}};
 const TOTAL=7500,POCKET=392,CARD_TOP=46,CARD_START=366;
@@ -213,22 +218,25 @@ function useCopy(text){
   return[copied,copy];
 }
 
-function BankRows(){
+function BankRows({extra}){
   return h('div',{className:'p-rows'},
     h('div',{className:'p-row'},h('span',null,'Banco'),h('b',null,BANK.banco)),
     h('div',{className:'p-row'},h('span',null,'Tipo'),h('b',null,BANK.tipo)),
-    h('div',{className:'p-row'},h('span',null,'Titular'),h('b',null,BANK.titular)),
     h('div',{className:'p-row'},h('span',null,'RUT'),h('b',null,BANK.rut)),
-    h('div',{className:'p-row'},h('span',null,'N° cuenta'),h('b',null,BANK.cuenta)),
+    BANK.cuenta&&h('div',{className:'p-row'},h('span',null,'N° cuenta'),h('b',null,BANK.cuenta)),
     h('div',{className:'p-row'},h('span',null,'Email'),h('b',null,BANK.email)),
-    h('div',{className:'p-row p-row--total'},h('span',null,'Monto'),h('b',null,EV.aporte))
+    h('div',{className:'p-row p-row--total'},h('span',null,'Monto'),
+      h('b',null,EV.aporte,
+        extra&&h('em',{style:{display:'block',fontFamily:'var(--serif)',fontStyle:'italic',fontWeight:'normal',fontSize:'11px',color:'var(--cream-faint)',marginTop:'2px'}},'O más si es que puedes apañar')
+      )
+    )
   );
 }
 
 function CopyBtn({text}){
   const[copied,copy]=useCopy(text);
-  return h('button',{className:'btn-copy'+(copied?' copied':''),onClick:copy},
-    copied?'✓ Copiado':'Copiar datos');
+  return h('button',{className:'btn-copy-sm'+(copied?' copied':''),onClick:copy,title:copied?'Copiado':'Copiar datos'},
+    copied?'✓':'⎘');
 }
 
 function App(){
@@ -310,10 +318,10 @@ function App(){
 
   const first=NOMBRE.split(/\s+/)[0]||'amigo';
   const amtVal=amt==='Otro'?(otro||'—'):amt;
-  const waTransfer=`¡Hola! Soy ${first}. Voy al reencuentro de 15 años (Generación 2011 · Saint George's). Acá va el comprobante de la transferencia.`;
-  const waPartial=`¡Hola! Soy ${first}. Quiero ir al reencuentro de 15 años (Generación 2011). Puedo aportar ${amtVal}.`;
+  const waTransfer=`Confirmo para el evento 🤩`;
+  const waPartial=`Oye me complica poner las 35, pero me pongo con : $`;
 
-  const mailNote=h('p',{className:'p-mail-note'},'Te llegará un mail de confirmación en los próximos 2 días.');
+  const mailNote=h('p',{className:'p-mail-note'},'Te llegará un mensaje de confirmación dentro de los próximos días.');
 
   /* ---- render ---- */
   return h('div',{className:'cf-art'+(done?' settled':'')+(collapsed?' collapsed':'')},
@@ -352,7 +360,7 @@ function App(){
                   h('span',{className:'c-name-line',style:{transform:`scaleX(${eIO(pName)})`}})
                 )
               ),
-              h('p',{className:'c-body',style:rev('body',true)},`Nos encontramos en ${EV.lugar} a compartir desde la tarde, con música, comida y lo que depare la noche.`),
+              h('p',{className:'c-body',style:rev('body',true)},'Nos vemos en la Casa Old Georgians a compartir desde la tarde con música, comida y buena onda.'),
               h('div',{className:'c-info',style:rev('grid',true)},
                 /* fila horario con "¿y si se estira?" inline */
                 h('div',{className:'c-irow'},
@@ -368,8 +376,25 @@ function App(){
                     )
                   )
                 ),
-                h('div',{className:'c-irow'},h('span',{className:'c-k'},'Dónde'),h('span',{className:'c-v'},EV.lugar,h('em',{className:'c-sub'},EV.dir))),
-                h('div',{className:'c-irow'},h('span',{className:'c-k'},'Aporte'),h('span',{className:'c-v'},EV.aporte))
+                h('div',{className:'c-irow'},
+                  h('span',{className:'c-k'},'Dónde'),
+                  h('span',{className:'c-v'},EV.lugar,
+                    h('a',{
+                      className:'c-sub',href:'https://maps.app.goo.gl/g1SiCXwq41Pxhcfb8',
+                      target:'_blank',rel:'noreferrer',
+                      style:{color:'inherit',textDecoration:'none'}
+                    },
+                      EV.dir,
+                      h('em',{style:{display:'block',fontSize:'11.5px',opacity:.75}},"(Est. 'nuevo' del colegio Saint George)")
+                    )
+                  )
+                ),
+                h('div',{className:'c-irow'},
+                  h('span',{className:'c-k'},'Aporte'),
+                  h('span',{className:'c-v'},EV.aporte,
+                    h('em',{className:'c-sub'},'Incluye bar abierto, foodtruck, DJ y alguna sorpresilla')
+                  )
+                )
               ),
               h('div',{className:'c-foot',style:rev('foot',true)},'✦ 2026 ✦')
             )
@@ -394,10 +419,16 @@ function App(){
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
             afterChoice===true&&h('p',{className:'p-note p-note--top',style:{color:'var(--gold)',fontStyle:'normal',fontSize:'13px'}},'✦ Anotado para el after.'),
-            h('p',{className:'p-note'+(afterChoice===null?' p-note--top':'')},'Transfiere los datos de abajo y manda el pantallazo por WhatsApp — con eso quedas en la lista.'),
-            h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Datos de transferencia'),
-            h(BankRows),
-            h(CopyBtn,{text:BANK_TEXT}),
+            h('p',{className:'p-note'+(afterChoice===null?' p-note--top':'')},"Transfiere a la cuenta de abajo y manda el pantallazo apretando el botón 'Mandar comprobante'."),
+            h('div',{className:'info-card'},
+              h('span',{className:'info-card-icon'},'💛'),
+              h('p',null,'Es posible que algunos compañer@s no puedan pagar la entrada, ¿te animas a poner un extra?')
+            ),
+            h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'8px'}},
+              h('div',{className:'p-step-label',style:{margin:0}},'Datos de transferencia'),
+              h(CopyBtn,{text:BANK_TEXT})
+            ),
+            h(BankRows,{extra:true}),
             h('div',{style:{height:'14px'}}),
             h('a',{
               className:'btn btn-gold',
@@ -413,41 +444,31 @@ function App(){
               h('span',{className:'p-eyebrow'},'Aporta lo que puedas'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},'Queremos que estés, en serio. Elige lo que te acomode — el resto lo cubrimos entre todos.'),
-            h('div',{className:'amt-grid'},
-              ['$10.000','$15.000','$20.000','$25.000','$30.000','Otro'].map(a=>
-                h('button',{key:a,className:'amt'+(amt===a?' on':''),onClick:()=>setAmt(a)},a)
-              )
+            h('p',{className:'p-note p-note--top'},'No queremos que nadie se quede afuera por plata. Pon lo que te acomode — el resto lo cubrimos entre todos.'),
+            h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'8px'}},
+              h('div',{className:'p-step-label',style:{margin:0}},'Transfiere a'),
+              h(CopyBtn,{text:BANK_TEXT})
             ),
-            amt==='Otro'&&h('input',{className:'amt-input',placeholder:'¿Cuánto puedes aportar?',value:otro,onChange:e=>setOtro(e.target.value)}),
-
-            /* datos bancarios se despliegan al seleccionar monto */
-            amt&&h('div',{className:'bank-inline'},
-              h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Transfiere a'),
-              h(BankRows),
-              h(CopyBtn,{text:BANK_TEXT+`\n(Aporte: ${amtVal})`}),
-              h('div',{style:{height:'12px'}}),
-              (amt==='Otro'&&!otro.trim())
-                ? h('button',{className:'btn btn-gold',disabled:true},'Listo, mandar ',h('span',{className:'ar'},'→'))
-                : h('a',{
-                    className:'btn btn-gold',
-                    href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,
-                    target:'_blank',rel:'noreferrer'
-                  },'Listo, mandar ',h('span',{className:'ar'},'→')),
-              mailNote
-            )
+            h(BankRows),
+            h('div',{style:{height:'12px'}}),
+            h('a',{
+              className:'btn btn-gold',
+              href:`https://wa.me/${WA}?text=${encodeURIComponent(waPartial)}`,
+              target:'_blank',rel:'noreferrer'
+            },'Listo, mandar ',h('span',{className:'ar'},'→')),
+            mailNote
           ),
 
           /* ¿Y si la noche se estira? */
           view==='after'&&h('div',{className:'panel'},
             h('div',{className:'p-head'},
-              h('span',{className:'p-eyebrow'},'Entre nos'),
+              h('span',{className:'p-eyebrow'},'Inviten a weas vías'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},`La casa cierra a las ${EV.horaFin}. Si te quedan pilas, estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?`),
+            h('p',{className:'p-note p-note--top'},'Nos prestaron la casa hasta la 01:00. Si te quedan pilas (y/o te gusta el webeo), estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?'),
             h('div',{className:'egg-row'},
-              h('button',{className:'btn btn-gold',onClick:()=>{setAfterChoice(true);switchView('bank');}},afterYes===true?'Anótame ✓':'Anótame'),
-              h('button',{className:'btn btn-ghost',onClick:()=>{setAfterChoice(false);switchView('bank');}},'Hasta ahí llego')
+              h('button',{className:'btn btn-gold',onClick:()=>{setAfterChoice(true);switchView('bank');}},'Anótame'),
+              h('button',{className:'btn btn-ghost',onClick:()=>{setAfterChoice(false);switchView('bank');}},'Estoy bien')
             )
           )
         )
