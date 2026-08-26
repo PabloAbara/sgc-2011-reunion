@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html,body{margin:0;background:#0c0a06;}</style>
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var alias = params.get('alias') || '';
+  var dest = 'https://sgc-2011-son-quince.vercel.app/confirmacion.html' + (alias ? '?n=' + encodeURIComponent(alias) : '');
+
+  // Log en background, no esperamos respuesta
+  if (alias) {
+    var img = new Image();
+    img.src = 'https://script.google.com/macros/s/AKfycbxNNXWnhmZeGeJAkkwEVpGIBssHLd7jPx16nM56c6xU4tGGVyMYE3sCiBf1CRnYzQ/exec?alias=' + encodeURIComponent(alias);
+  }
+
+  window.location.replace(dest);
+})();
+</script>
+</head>
+<body></body>
+</html>
