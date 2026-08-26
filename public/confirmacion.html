@@ -170,6 +170,14 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .panel--ok .p-note{margin-bottom:18px;}
 .egg-row{display:flex;flex-direction:column;gap:9px;}
 
+/* toast */
+.toast{position:absolute;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:rgba(201,161,74,.96);color:#1a1207;font-family:var(--sans);font-weight:700;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:10px 22px;
+  border-radius:20px;opacity:0;transition:opacity .3s ease,transform .3s ease;
+  pointer-events:none;z-index:50;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
 a{color:var(--gold);}a:hover{color:var(--gold-soft);}
 @media(prefers-reduced-motion:reduce){.open-hint{animation:none;opacity:.7;}}
 </style>
@@ -247,6 +255,8 @@ function App(){
   const [sent,setSent]=useState(false);
   const [afterYes,setAfterYes]=useState(null);
   const [afterChoice,setAfterChoice]=useState(null); // persists across switchView
+  const [toast,setToast]=useState(false);
+  const showToast=()=>{setToast(true);setTimeout(()=>setToast(false),2200);};
   const [started]=useState(true);
   const [cardH,setCardH]=useState(430);
   const [stageH,setStageH]=useState(0); // locked once animation done
@@ -360,7 +370,7 @@ function App(){
                   h('span',{className:'c-name-line',style:{transform:`scaleX(${eIO(pName)})`}})
                 )
               ),
-              h('p',{className:'c-body',style:rev('body',true)},'Nos vemos en la Casa Old Georgians a compartir desde la tarde con música, comida y buena onda.'),
+              h('p',{className:'c-body',style:rev('body',true)},'Nos vemos en el colegio, en la Casa Old Georgians, para compartir desde la tarde con música, comida y buena onda.'),
               h('div',{className:'c-info',style:rev('grid',true)},
                 /* fila horario con "¿y si se estira?" inline */
                 h('div',{className:'c-irow'},
@@ -465,10 +475,16 @@ function App(){
               h('span',{className:'p-eyebrow'},'Inviten a weas vías'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},'Nos prestaron la casa hasta la 01:00. Si te quedan pilas (y/o te gusta el webeo), estamos viendo dónde seguir — nada confirmado todavía. ¿Te anotamos?'),
+            h('p',{className:'p-note p-note--top'},
+              'Nos prestaron la casa hasta la 01:00 (',h('em',null,'si nos portamos bien hasta las 02'),
+              '). Si te quedan pilas (y/o te gusta el webeo), estamos viendo dónde seguir, nada confirmado todavía. ¿Te anotamos?'
+            ),
             h('div',{className:'egg-row'},
-              h('button',{className:'btn btn-gold',onClick:()=>{setAfterChoice(true);switchView('bank');}},'Anótame'),
-              h('button',{className:'btn btn-ghost',onClick:()=>{setAfterChoice(false);switchView('bank');}},'Estoy bien')
+              h('button',{className:'btn btn-gold',onClick:()=>{
+                setAfterChoice(true);showToast();
+                setTimeout(()=>switchView('bank'),1800);
+              }},'Anótame'),
+              h('button',{className:'btn btn-ghost',onClick:()=>switchView('cta')},'Estoy bien')
             )
           )
         )
@@ -476,6 +492,7 @@ function App(){
 
       h('div',{className:'cf-grain'})
     ),
+    h('div',{className:'toast'+(toast?' show':'')},'Te anotamos ✦'),
     !done&&h('button',{className:'cf-skip',onClick:skip},'Saltar →')
   );
 }
