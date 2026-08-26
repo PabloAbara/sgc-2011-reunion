@@ -110,7 +110,7 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .cf-skip:hover{color:var(--cream);transform:translateX(2px);}
 
 /* CTAs / paneles */
-.cf-actions{position:relative;z-index:12;padding:8px 26px 40px;}
+.cf-actions{position:relative;z-index:12;padding:8px 26px 40px;background:#0c0a06;border-radius:0 0 12px 12px;}
 .pane{display:flex;flex-direction:column;gap:11px;}
 
 .btn{width:100%;border:0;cursor:pointer;border-radius:3px;font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:16px 18px;display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;transition:transform .22s cubic-bezier(.2,.7,.2,1),background .22s ease,box-shadow .22s ease,color .22s ease;}
@@ -207,6 +207,8 @@ const BANK = {
   banco:'Banco BICE',tipo:'Cuenta Corriente',
   rut:'18.397.069-0',cuenta:'21735329',email:'generacion2011sgc@gmail.com',
 };
+const AFTER_URL='https://script.google.com/macros/s/AKfycbyoKJkqAN0UV5oCkD-81bvv0RNW3CgZG95tbdTZ4o44VRS9AzIYd2NV-Q9GCSevxfI/exec';
+const AFTER_TOKEN='sgc2011xK9m';
 const BANK_TEXT = `Banco: ${BANK.banco}\nTipo: ${BANK.tipo}\nRUT: ${BANK.rut}${BANK.cuenta?'\nN° cuenta: '+BANK.cuenta:''}\nEmail: ${BANK.email}\nMonto: ${EV.aporte}`;
 
 const T={env:{at:100,dur:800},seal:{at:1000,dur:700},flap:{at:1600,dur:950},card:{at:2350,dur:1500},head:{at:3500,dur:700},name:{at:4050,dur:1500},body:{at:5600,dur:700},grid:{at:5950,dur:700},foot:{at:6350,dur:700},cta:{at:6650,dur:800}};
@@ -339,7 +341,7 @@ function App(){
   const first=NOMBRE.split(/\s+/)[0]||'amigo';
   const amtVal=amt==='Otro'?(otro||'—'):amt;
   const waTransfer=`Confirmo para el evento de 15 años 🤩, y acá va mi pantallazo`;
-  const waPartial=`Oye me complica poner las 35, pero me pongo con : $`;
+  const waPartial=`Oye complica poner las 35, pero me pongo con $X, acá va mi pantallazo.`;
 
   const mailNote=h('p',{className:'p-mail-note'},'Te llegará un mensaje de confirmación dentro de los próximos días.');
 
@@ -471,7 +473,7 @@ function App(){
               h('span',{className:'p-eyebrow'},'Aporta lo que puedas'),
               h('button',{className:'p-back',onClick:()=>switchView('cta')},'← Volver')
             ),
-            h('p',{className:'p-note p-note--top'},'No queremos que nadie se quede afuera por plata. Pon lo que puedas, el resto lo cubrimos entre todos.'),
+            h('p',{className:'p-note p-note--top'},'No queremos que nadie se quede afuera por plata. Pon lo que puedas, intentaremos cubrirlo entre todos.'),
             h('div',{className:'p-step-label',style:{marginBottom:'8px'}},'Transfiere a'),
             h(BankRows),
             h('div',{style:{height:'10px'}}),
@@ -513,8 +515,9 @@ function App(){
                 autoFocus:true,
                 onKeyDown:e=>{if(e.key==='Enter'&&afterName.trim()){
                   setAfterChoice(true);
+                  fetch(AFTER_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'after',nombre:afterName.trim(),timestamp:new Date().toISOString(),token:AFTER_TOKEN})});
                   switchView('bank');
-                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',3000),400);
+                  setTimeout(()=>showToast('Ya te anotamos en la lista, ahora sigue con el pago para la fiesta 🎉',3000),400);
                 }}
               }),
               h('button',{
@@ -522,8 +525,9 @@ function App(){
                 disabled:!afterName.trim(),
                 onClick:()=>{
                   setAfterChoice(true);
+                  fetch(AFTER_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'after',nombre:afterName.trim(),timestamp:new Date().toISOString(),token:AFTER_TOKEN})});
                   switchView('bank');
-                  setTimeout(()=>showToast('Ya te anotamos en la lista para el after — ahora continúa con el pago para la fiesta 🎉',3000),400);
+                  setTimeout(()=>showToast('Ya te anotamos en la lista, ahora sigue con el pago para la fiesta 🎉',3000),400);
                 }
               },'Anótame ',h('span',{className:'ar'},'→'))
             )
